@@ -1,3 +1,7 @@
+html {
+  box-sizing: border-box;
+}
+
 .page-wrapper{
   position: relative;
   width: 90%;
@@ -34,4 +38,20 @@
 p{
   height: 5vh;
   line-height: 5vh;
+}
+
+.gameboard {
+  border: 2px solid blue;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 0px 0px;
+}
+
+.gameboard-square {
+  background-color: green;
+  height: 144px;
+  line-height: 144px;
+  font-size: 4rem;
+  border: 2px solid red;
 }
