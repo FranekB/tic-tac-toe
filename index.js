@@ -1,55 +1,56 @@
 const gameBoard = (() => {
-  let gameboard = [["X", "X", "X"], ["O", "O", "O"], ["X", "X", "X"]];
+  let gameboard = ["X", "X", "X", "X", "X", "X", "X", "X", "X"];
 
-  const getGameboard = () => gameboard;
+  const clearGameBoard = () => {
+    gameboard = ["", "", "", "", "", "", "", "", ""];
+  }
+
+  const getSquare = (number) => {
+    return gameboard[number]
+  }
+  const setSquare = (number, mark) => {
+    gameboard[number] = mark
+  }
+
+
   return {
-    gameboard,
-    getGameboard
+    getSquare,
+    clearGameBoard,
+    setSquare
   };
+
 })()
 
 
 
 const playerFactory = (name, mark) => {
+
   const getName = () => name;
   const getMark = () => mark;
-
   return { getName, getMark };
 }
-
 
 
 
 const displayControler = (() => {
   let player1 = playerFactory("Player1", "X");
   let player2 = playerFactory("Player2", "O");
+  let current_player = player1
+  //DOM Cache
+  let squares = Array.from(document.querySelectorAll(".gameboard-square"))
 
-
-  const init = () => {
-    cacheDOM();
-    render();
-  }
-  const cacheDOM = () => {
-    gameboardContainer = document.querySelector(".gameboard")
-    return gameboardContainer
+  //bind events
+  for(square of squares){
+    square.addEventListener("click", setMark)
   }
 
-  const createSquareElement = (value) => {
-    let element = document.createElement("div")
-    element.classList.add("gameboard-square")
-    element.textContent = value
-    return element
+  function setMark(event){
+    let squareNumber = (event.target.getAttribute("data"));
+    gameBoard.setSquare(squareNumber, current_player.getMark())
+    render(event.target, squareNumber)
   }
 
-  const render = () => {
-    for (rows of gameBoard.getGameboard()){
-      for (cols of rows){
-        gameboardContainer.appendChild(createSquareElement(cols));
-      }
-    }
+  function render(square, number){
+    square.textContent = gameBoard.getSquare(number);
   }
-
-  init()
-
-
 })()

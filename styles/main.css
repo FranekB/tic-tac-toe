@@ -14,7 +14,6 @@ html {
   width:70%;
   margin: auto;
   background-color: yellow;
-  height: 10vh;
   text-align: center;
 }
 
@@ -25,14 +24,13 @@ html {
   width: 70%;
   margin: auto;
   background: blue;
-  height: 5vh;
   text-align: center;
 }
 .container{
   width: 50%;
-  margin: 10vh auto 0;
   background: red;
   text-align: center;
+  margin: 5vh auto;
 }
 
 p{
@@ -43,8 +41,8 @@ p{
 .gameboard {
   border: 2px solid blue;
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: repeat(autofit, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 0px 0px;
 }
 
@@ -54,4 +52,11 @@ p{
   line-height: 144px;
   font-size: 4rem;
   border: 2px solid red;
+}
+
+.game-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
