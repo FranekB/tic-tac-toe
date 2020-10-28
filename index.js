@@ -83,19 +83,34 @@ const gameBoard = (() => {
 })()
 
 const game = (() => {
-  let player1 = playerFactory("Player1", "X");
-  let player2 = playerFactory("Player2", "O");
+  let player1 = playerFactory("Testowy", "X");
+  let player2 = playerFactory("Testowy2", "O");
   let current_player = player1
   let gameState = "Playing"
 
   //DOM Cache
   let squares = Array.from(document.querySelectorAll(".gameboard-square"))
-
+  //let startButton = document.querySelector("#start-btn")
+  let resetButton = document.querySelector("#reset-btn")
+  let matchUpDiv = document.querySelector(".players-div h2")
+  let currentMoveDiv = document.querySelector("#move-para")
+  let resultDiv = document.querySelector("#result-para")
   //bind events
   for(square of squares){
     square.addEventListener("click", setMark)
   }
+  //startButton.addEventListener("click", startGame)
+  resetButton.addEventListener("click", restartGame)
 
+  function startGame(){
+    gameState = "Playing";
+  }
+
+  function restartGame(){
+    gameState = "Playing";
+    gameBoard.clearGameBoard();
+    render()
+  }
   //switches current player
   function switchCurrentPlayer(player){
     current_player == player1 ? current_player = player2 : current_player = player1
@@ -113,11 +128,36 @@ const game = (() => {
     render()
   }
 
+  function setInterface(){
+    matchUpDiv.textContent = `${player1.getName()} ${player1.getMark()} vs ${player2.getName()} ${player2.getMark()}`
+    currentMoveDiv.textContent = `${current_player.getMark()}`
+  }
+
+  function displayResult(){
+    if (gameState == "Tie"){
+      resultDiv.textContent = "It's a Tie. Try Again!"
+    }
+    else if (gameState == "Finished"){
+      current_player == player1 ? resultDiv.textContent = `The winner is ${player2.getName()}` : resultDiv.textContent = `The winner is ${player1.getName()}`
+    }
+  }
+
+  function checkGameState(){
+    if (gameBoard.isOver()){
+      gameState = "Finished"
+      return true
+    }
+    else if(gameBoard.isAllMarksPlaced()){
+      gameState = "Tie"
+      return true
+    }
+  }
   //renders gameboard on a screen
   function render(){
-    if (gameBoard.isOver()) gameState = "Finished"
-    else if(gameBoard.isAllMarksPlaced()) gameState = "Tie"
-    console.log(gameState)
+    setInterface();
+    if(checkGameState()){
+      displayResult()
+    };
     let i = 0
     for(row of gameBoard.getGameBoard()){
       for(col of row){

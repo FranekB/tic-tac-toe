@@ -11,13 +11,13 @@
   <body>
     <div class="page-wrapper">
       <header id="header">
-        <h1>Tic Tac Toe</h1>
+        <h1>Tic Tac Toe Clash</h1>
       </header>
 
       <main>
         <div class="game-div container">
-          <div class="game-options container">
-            Form Goes here
+          <div class="players-div container">
+            <h2></h2>
           </div>
           <div class="gameboard container">
           <!-- O's and X's goes here -->
@@ -31,13 +31,49 @@
             <div data-position="21" class="gameboard-square"></div>
             <div data-position="22" class="gameboard-square"></div>
           </div>
+          <div class="result-div container">
+            <div class="move-div bottom-container">
+              <p>Now Moves</p>
+              <p id="move-para">X</p>
+            </div>
+            <div class="winner-msg bottom-container">
+              <p id="result-para">Winner is Player1</p>
+            </div>
+            <div class="game-options bottom-container">
+              <button id="reset-btn" type="button">Reset Game</button>
+              <button type="button">Change options</button>
+            </div>
+          </div>
         </div>
       </main>
-
-      <footer id="footer">
-        <p>Page created by FranekB with help of The Odin Project</p>
-      </footer>
     </div>
     <script src="index.js" type="text/javascript"></script>
   </body>
 </html>
+
+<!--
+<div class="game-options">
+  <h2>Game Options</h2>
+  <form>
+    <div class="form-field">
+      <p>Against who you want to play?</p>
+      <label for="player">Other player<label>
+      <input type="radio" id="player" value="player" name="game-type" />
+      <label for="computer">Computer</label>
+      <input type="radio" id="computer" value="computer" name="game-type"/>
+    </div>
+    <div class="form-field">
+      <label for="name-first">First player name:</label>
+      <input type="text" id="name-first" name="first-player " />
+    </div>
+    <div class="form-field">
+      <label for="name-second">Second player name:</label>
+      <input type="text" id="name-second" name="second-player"/>
+    </div>
+    <div class="form-buttons">
+      <button type="button" id="start-btn">Start game</button>
+      <button type="button" id="reset-btn">Restart game</button>
+    </div>
+  </form>
+</div>
+-->

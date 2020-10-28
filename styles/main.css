@@ -2,6 +2,15 @@ html {
   box-sizing: border-box;
 }
 
+/*Typography*/
+
+h1 {
+  font-size: 4rem;
+}
+
+h2 {
+  font-size: 2.5rem;
+}
 .page-wrapper{
   position: relative;
   width: 90%;
@@ -11,45 +20,33 @@ html {
 }
 
 #header{
-  width:70%;
+  width:50%;
   margin: auto;
-  background-color: yellow;
+  padding-top: 1em;
   text-align: center;
 }
 
-#footer{
-  position: absolute;
-  bottom: 0;
-  left: calc((1728px - 1209px) / 2);
-  width: 70%;
-  margin: auto;
-  background: blue;
-  text-align: center;
-}
 .container{
-  width: 50%;
+  width: 60%;
   background: red;
+  margin: 1.5em auto;
+  border: 1px solid yellow;
   text-align: center;
-  margin: 5vh auto;
 }
 
-p{
-  height: 5vh;
-  line-height: 5vh;
-}
 
 .gameboard {
   border: 2px solid blue;
   display: grid;
-  grid-template-rows: repeat(autofit, 1fr);
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 0px 0px;
+  width: 400px;
 }
 
 .gameboard-square {
   background-color: green;
-  height: 144px;
-  line-height: 144px;
+  height: 130px;
+  line-height: 130px;
   font-size: 4rem;
   border: 2px solid red;
 }
@@ -59,4 +56,37 @@ p{
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.result-div {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+
+.result-div{
+  display: flex;
+  justify-content: center;
+  width: 60%;
+  min-height: 100px;
+}
+
+.bottom-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px solid blue;
+  margin: 1em;
+  padding: 0.5em;
+  width: 25%;
+}
+
+.winner-msg{
+  width: 50%;
 }
