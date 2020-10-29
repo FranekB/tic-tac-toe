@@ -1,5 +1,6 @@
 html {
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 /*Typography*/
@@ -9,7 +10,7 @@ h1 {
 }
 
 h2 {
-  font-size: 2.5rem;
+  font-size: 2rem;
 }
 .page-wrapper{
   position: relative;
@@ -62,17 +63,32 @@ h2 {
   width: 100%;
   display: flex;
   justify-content: center;
+  font-size: 1.25rem;
 }
 
-.hidden {
+.hidden-right {
   visibility: hidden;
+  transform: translate(150%);
+  transition: 0.5s ease-out;
+}
+
+.hidden-left {
+  position: absolute;
+  transition: 0.5s ease-out;
+  transform: translate(-200%);
+}
+
+.visible-left{
+  position: relative;
+  transform: translate(0%);
+  transition: transform 0.5s ease-out;
 }
 
 
 .result-div{
   display: flex;
   justify-content: center;
-  width: 60%;
+  width: 70%;
   min-height: 100px;
 }
 
@@ -84,9 +100,53 @@ h2 {
   border: 1px solid blue;
   margin: 1em;
   padding: 0.5em;
-  width: 25%;
+  width: 33%;
 }
 
 .winner-msg{
   width: 50%;
+}
+
+.btn {
+  min-width: 25%;
+  border: none;
+  background: blue;
+  color: white;
+  border-radius: 10px;
+  margin: 5px;
+  padding: 0.3em;
+  cursor: pointer;
+}
+
+
+/** Initial form/game options **/
+.game-form {
+  width: 30%;
+  margin: 20px auto;
+  background-color: red;
+  text-align: center;
+}
+
+.game-mode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.game-options{
+  width: 30%;
+  margin: 10px auto;
+  background-color: red;
+}
+
+.form-field{
+  margin: 0.5em auto;
+  width: 50%;
+  text-align: left;
+}
+
+.form-flex{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
