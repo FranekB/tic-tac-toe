@@ -89,18 +89,21 @@ const game = (() => {
   let gameState = "Playing"
 
   //DOM Cache
-  let squares = Array.from(document.querySelectorAll(".gameboard-square"))
+  let squares = Array.from(document.querySelectorAll(".gameboard-square"));
   //let startButton = document.querySelector("#start-btn")
-  let resetButton = document.querySelector("#reset-btn")
-  let matchUpDiv = document.querySelector(".players-div h2")
-  let currentMoveDiv = document.querySelector("#move-para")
-  let resultDiv = document.querySelector("#result-para")
+  let resetButton = document.querySelector("#reset-btn");
+  let matchUpDiv = document.querySelector(".players-div h2");
+  let currentMoveDiv = document.querySelector("#move-para");
+  let resultDiv = document.querySelector("#result-para");
+  let changeOptionButton = document.querySelector("#change-option-btn");
+
   //bind events
   for(square of squares){
     square.addEventListener("click", setMark)
   }
   //startButton.addEventListener("click", startGame)
   resetButton.addEventListener("click", restartGame)
+  changeOptionButton.addEventListener("click", bringOptions)
 
   function startGame(){
     gameState = "Playing";
@@ -111,6 +114,14 @@ const game = (() => {
     gameBoard.clearGameBoard();
     render()
   }
+
+  function bringOptions(){
+    let gameDiv = document.querySelector(".game-div");
+    let gameOptionsDiv = document.querySelector(".game-form");
+    gameDiv.classList.toggle("hidden-right");
+    setTimeout(function(){gameOptionsDiv.classList.toggle("visible-left")}, 500);
+  }
+
   //switches current player
   function switchCurrentPlayer(player){
     current_player == player1 ? current_player = player2 : current_player = player1
