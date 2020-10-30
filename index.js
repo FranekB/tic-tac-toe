@@ -97,10 +97,10 @@ const game = (() => {
   let resultDiv = document.querySelector("#result-para");
   let changeOptionButton = document.querySelector("#change-option-btn");
   let gameDiv = document.querySelector(".game-div");
-  let gameOptionsDiv = document.querySelector(".game-form");
+  let gameOptionsDiv = document.querySelector(".game-opponent-options");
 
   let chooseButtons = document.querySelectorAll(".choose-btn");
-  let formDiv = document.querySelector(".game-form-options")
+  let formDiv = document.querySelector(".game-div-options")
   //bind events
   for(square of squares){
     square.addEventListener("click", setMark)
@@ -121,15 +121,13 @@ const game = (() => {
 
   function bringOptions(){
     function bringForm(){
-      if (!formDiv.classList.contains("visible-bottom")){
-        formDiv.classList.toggle("visible-bottom")
-      }
+      formDiv.classList.toggle("visible-bottom");
     }
     for (const button of chooseButtons){
       button.addEventListener("click", bringForm);
     }
     gameDiv.classList.toggle("hidden-right");
-    setTimeout(function(){gameOptionsDiv.classList.toggle("visible-left")}, 500);
+    setTimeout(function(){gameOptionsDiv.classList.toggle("visible-left")}, 400);
   }
 
 
