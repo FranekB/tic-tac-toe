@@ -96,7 +96,11 @@ const game = (() => {
   let currentMoveDiv = document.querySelector("#move-para");
   let resultDiv = document.querySelector("#result-para");
   let changeOptionButton = document.querySelector("#change-option-btn");
+  let gameDiv = document.querySelector(".game-div");
+  let gameOptionsDiv = document.querySelector(".game-form");
 
+  let chooseButtons = document.querySelectorAll(".choose-btn");
+  let formDiv = document.querySelector(".game-form-options")
   //bind events
   for(square of squares){
     square.addEventListener("click", setMark)
@@ -116,11 +120,18 @@ const game = (() => {
   }
 
   function bringOptions(){
-    let gameDiv = document.querySelector(".game-div");
-    let gameOptionsDiv = document.querySelector(".game-form");
+    function bringForm(){
+      if (!formDiv.classList.contains("visible-bottom")){
+        formDiv.classList.toggle("visible-bottom")
+      }
+    }
+    for (const button of chooseButtons){
+      button.addEventListener("click", bringForm);
+    }
     gameDiv.classList.toggle("hidden-right");
     setTimeout(function(){gameOptionsDiv.classList.toggle("visible-left")}, 500);
   }
+
 
   //switches current player
   function switchCurrentPlayer(player){

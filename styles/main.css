@@ -1,6 +1,7 @@
 html {
   box-sizing: border-box;
   overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 /*Typography*/
@@ -72,17 +73,7 @@ h2 {
   transition: 0.5s ease-out;
 }
 
-.hidden-left {
-  position: absolute;
-  transition: 0.5s ease-out;
-  transform: translate(-200%);
-}
 
-.visible-left{
-  position: relative;
-  transform: translate(0%);
-  transition: transform 0.5s ease-out;
-}
 
 
 .result-div{
@@ -108,7 +99,7 @@ h2 {
 }
 
 .btn {
-  min-width: 25%;
+  min-width: 100px;
   border: none;
   background: blue;
   color: white;
@@ -120,33 +111,55 @@ h2 {
 
 
 /** Initial form/game options **/
+.options-container h2 {
+  margin-bottom: 0.25em;
+  border-bottom: 1px solid grey;
+  width: 90%;
+  padding-bottom: 0.15em;
+}
+
+.options-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.75em;
+}
+
+/**VISIBILITY AND ANIMATIONS OF FORMS **/
+
 .game-form {
+  position: absolute;
+  transition: 0.5s ease-out;
+  transform: translate(-200%);
   width: 30%;
   margin: 20px auto;
   background-color: red;
   text-align: center;
 }
 
-.game-mode {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.visible-left{
+  position: relative;
+  transform: translate(0%);
+  transition: transform 0.5s ease-out;
 }
 
-.game-options{
+.game-form-options{
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 50%;
+  margin-left: -15%;
+  height: 300px;
   width: 30%;
-  margin: 10px auto;
   background-color: red;
+  transform: translateY(400%);
+  transition: transform 0.5s ease-out;
 }
 
-.form-field{
-  margin: 0.5em auto;
-  width: 50%;
-  text-align: left;
-}
-
-.form-flex{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.visible-bottom{
+  position: relative;
+  left: 0;
+  margin: auto;
+  transform: translate(0%);
+  transition: transform 0.5s ease-out;
 }
