@@ -1,9 +1,13 @@
 html {
   box-sizing: border-box;
   overflow-x: hidden;
-  overflow-y: hidden;
 }
 
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
 /*Typography*/
 
 h1 {
@@ -191,17 +195,22 @@ input:focus{
 }
 
 .game-div-options{
-  position: absolute;
-  left: 50%;
-  width: 30%;
   background-color: red;
-  transform: translate(-50%, 400%);
+  transform: translate(0%, 400%);
   transition: transform 0.5s ease-in;
 }
 
-.visible-bottom{
-  margin: 20px auto;
+.hidden{
+  position: absolute;
+  overflow: hidden;
+  left: 50%;
+  width: 30%;
+  height: 55vh;
   transform: translate(-50%, 40%);
+}
+.visible-bottom{
+  transform: translate(0%);
+  margin: 20px auto;
   transition: transform 0.5s ease-out;
 }
 

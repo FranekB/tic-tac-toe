@@ -21,31 +21,32 @@
             <button class="btn choose-btn choose-opponent-js" type="button">Computer</button>
             <button class="btn choose-btn choose-opponent-js" type="button">Player</button>
         </div>
-        <div class="game-div-options options-container game-options-js">
-          <h2>Game Options</h2>
-          <form class="game-form-options">
-            <h3>Names</h3>
-            <label for="player1-name" class="player-label">Player 1
-              <input type="text" id="player1-name" class="player-input-js" name="player1-name" />
-            </label>
-            <label for="player2-name" class="player-label">Player 2
-              <input type="text" id="player2-name" class="player-input-js" name="player2-name" />
-            </label>
-            <h3>Marks</h3>
-              <div class="images">
-                <div class="mark-img mark-div-js">
-                  <img src="images/x.png" alt="X" class="mark-img-js" />
-                  <p>Player 1</p>
+        <div class="hidden">
+          <div class="game-div-options options-container game-options-js">
+            <h2>Game Options</h2>
+            <form class="game-form-options">
+              <h3>Names</h3>
+              <label for="player1-name" class="player-label">Player 1
+                <input type="text" id="player1-name" class="player-input-js" name="player1-name" />
+              </label>
+              <label for="player2-name" class="player-label">Player 2
+                <input type="text" id="player2-name" class="player-input-js" name="player2-name" />
+              </label>
+              <h3>Marks</h3>
+                <div class="images">
+                  <div class="mark-img mark-div-js">
+                    <img src="images/x.png" alt="X" class="mark-img-js" />
+                    <p>Player 1</p>
+                  </div>
+                  <div class="mark-img mark-div-js">
+                    <img src="images/o.png" alt="O" class="mark-img-js"/>
+                    <p>Player 2</p>
+                  </div>
                 </div>
-                <div class="mark-img mark-div-js">
-                  <img src="images/o.png" alt="O" class="mark-img-js"/>
-                  <p>Player 2</p>
-                </div>
-              </div>
-            <button type="button" class="btn start-btn start-btn-js">Start Game</button>
-          </form>
+              <button type="button" class="btn start-btn start-btn-js">Start Game</button>
+            </form>
+          </div>
         </div>
-
         <!-- Game Mode Interface -->
         <div class="game-div container game-js hidden-right">
           <div class="players-div container">

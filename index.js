@@ -103,6 +103,7 @@ const game = (() => {
   let startButton = document.querySelector(".start-btn-js");
   let inputs = document.querySelectorAll(".player-input-js");
   let markDivs = document.querySelectorAll(".mark-div-js");
+  let hiddenDiv = document.querySelector(".hidden")
   //bind events
   for(const square of squares){
     square.addEventListener("click", setMark)
@@ -125,6 +126,7 @@ const game = (() => {
     player1 = playerFactory(player1Name, marksImg[0].getAttribute("alt"))
     player2 = playerFactory(player2Name, marksImg[1].getAttribute("alt"))
     player1.getMark() === "X" ? currentPlayer = player1 : currentPlayer = player2;
+    hiddenDiv.style.width = "0%";
 
     function turnOffInterface(){
       formDiv.classList.toggle("visible-bottom");
@@ -148,10 +150,10 @@ const game = (() => {
 
   function bringForm(){
     formDiv.classList.toggle("visible-bottom");
+    hiddenDiv.style.width = "30%";
   }
 
   function bringOptions(){
-
     gameDiv.classList.toggle("hidden-right");
     setTimeout(function(){gameOptionsDiv.classList.toggle("visible-left")}, 400);
   }
