@@ -83,9 +83,9 @@ const gameBoard = (() => {
 })()
 
 const game = (() => {
-  let player1 = playerFactory("Testowy", "X");
-  let player2 = playerFactory("Testowy2", "O");
-  let current_player = player1
+  let player1;
+  let player2;
+  let currentPlayer;
   let gameState = "Playing"
 
   //DOM Cache
@@ -98,21 +98,46 @@ const game = (() => {
   let changeOptionButton = document.querySelector("#change-options-js");
   let gameDiv = document.querySelector(".game-js");
   let gameOptionsDiv = document.querySelector(".options-opponent-js");
-
   let chooseButtons = document.querySelectorAll(".choose-opponent-js");
   let formDiv = document.querySelector(".game-options-js");
   let startButton = document.querySelector(".start-btn-js");
+  let inputs = document.querySelectorAll(".player-input-js");
+  let markDivs = document.querySelectorAll(".mark-div-js");
   //bind events
-  for(square of squares){
+  for(const square of squares){
     square.addEventListener("click", setMark)
   }
-  //startButton.addEventListener("click", startGame)
+  for(const button of chooseButtons){
+    button.addEventListener("click", bringForm);
+  }
   resetButton.addEventListener("click", restartGame)
   changeOptionButton.addEventListener("click", bringOptions)
   startButton.addEventListener("click", startGame)
 
+  for (mark of markDivs){
+    mark.addEventListener("click", switchMarks);
+  }
+
   function startGame(){
+    let marksImg = document.querySelectorAll(".mark-img-js");
+    let player1Name = inputs[0].value || "Player 1";
+    let player2Name = inputs[1].value || "Player 2";
+    player1 = playerFactory(player1Name, marksImg[0].getAttribute("alt"))
+    player2 = playerFactory(player2Name, marksImg[1].getAttribute("alt"))
+    player1.getMark() === "X" ? currentPlayer = player1 : currentPlayer = player2;
+
+    function turnOffInterface(){
+      formDiv.classList.toggle("visible-bottom");
+      gameOptionsDiv.classList.toggle("visible-left");
+      gameDiv.classList.toggle("hidden-right");
+    }
+
     gameState = "Playing";
+    turnOffInterface();
+    setInterface();
+    restartGame();
+    render();
+
   }
 
   function restartGame(){
@@ -121,13 +146,12 @@ const game = (() => {
     render()
   }
 
+  function bringForm(){
+    formDiv.classList.toggle("visible-bottom");
+  }
+
   function bringOptions(){
-    function bringForm(){
-      formDiv.classList.toggle("visible-bottom");
-    }
-    for (const button of chooseButtons){
-      button.addEventListener("click", bringForm);
-    }
+
     gameDiv.classList.toggle("hidden-right");
     setTimeout(function(){gameOptionsDiv.classList.toggle("visible-left")}, 400);
   }
@@ -135,7 +159,7 @@ const game = (() => {
 
   //switches current player
   function switchCurrentPlayer(player){
-    current_player == player1 ? current_player = player2 : current_player = player1
+    currentPlayer == player1 ? currentPlayer = player2 : currentPlayer = player1
   }
 
   //Adds mark of current player to the gameboard
@@ -144,15 +168,22 @@ const game = (() => {
 
     let squarePosition = Array.from(event.target.getAttribute("data-position"));
     if(gameBoard.getSquare(squarePosition)== ""){
-      gameBoard.setSquare(squarePosition, current_player.getMark())
-      switchCurrentPlayer(current_player)
+      gameBoard.setSquare(squarePosition, currentPlayer.getMark())
     }
+    switchCurrentPlayer()
     render()
   }
 
+  function switchMarks(){
+    let tempDiv = markDivs[0].innerHTML;
+    markDivs[0].innerHTML = markDivs[1].innerHTML;
+    markDivs[1].innerHTML = tempDiv;
+    markDivs[0].lastElementChild.textContent = "Player 1";
+    markDivs[1].lastElementChild.textContent = "Player 2";
+  }
   function setInterface(){
     matchUpDiv.textContent = `${player1.getName()} ${player1.getMark()} vs ${player2.getName()} ${player2.getMark()}`
-    currentMoveDiv.textContent = `${current_player.getMark()}`
+    currentMoveDiv.textContent = `${currentPlayer.getName()}`
   }
 
   function displayResult(){
@@ -160,7 +191,7 @@ const game = (() => {
       resultDiv.textContent = "It's a Tie. Try Again!"
     }
     else if (gameState == "Finished"){
-      current_player == player1 ? resultDiv.textContent = `The winner is ${player2.getName()}` : resultDiv.textContent = `The winner is ${player1.getName()}`
+      currentPlayer == player1 ? resultDiv.textContent = `The winner is ${player2.getName()}` : resultDiv.textContent = `The winner is ${player1.getName()}`
     }
   }
 

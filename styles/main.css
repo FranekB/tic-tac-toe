@@ -63,6 +63,8 @@ h3{
   align-items: center;
   justify-content: center;
   margin-top: 5em;
+  transition: 0.5s ease-out;
+  transition-delay: 750ms;
 }
 
 .result-div {
@@ -73,7 +75,6 @@ h3{
 }
 
 .hidden-right {
-  visibility: hidden;
   transform: translate(150%);
   transition: 0.5s ease-out;
 }
@@ -168,36 +169,39 @@ input{
   height: 20px;
   padding-left: 0.3em;
 }
+
+input:focus{
+  outline: none;
+}
+
 .game-opponent-options {
   position: absolute;
+  left: 50%;
   transition: 0.5s ease-out;
-  transform: translate(-200%);
+  transform: translate(-400%);
   width: 30%;
-  margin: 5em auto 20px;
+  margin: 2em auto 2em;
   background-color: red;
+  transition-delay: 500ms;
 }
 
 .visible-left{
-  position: relative;
-  transform: translate(0%);
+  transform: translate(-50%);
   transition: transform 0.5s ease-out;
 }
 
 .game-div-options{
   position: absolute;
   left: 50%;
-  margin-left: -15%;
   width: 30%;
   background-color: red;
-  transform: translateY(400%);
+  transform: translate(-50%, 400%);
   transition: transform 0.5s ease-in;
 }
 
 .visible-bottom{
-  position: relative;
-  left: 0;
   margin: 20px auto;
-  transform: translate(0%);
+  transform: translate(-50%, 40%);
   transition: transform 0.5s ease-out;
 }
 

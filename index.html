@@ -16,7 +16,7 @@
 
       <main>
         <!-- Game Options -->
-        <div class="game-opponent-options options-container options-opponent-js">
+        <div class="game-opponent-options options-container options-opponent-js visible-left">
             <h2>Choose Your Opponent</h2>
             <button class="btn choose-btn choose-opponent-js" type="button">Computer</button>
             <button class="btn choose-btn choose-opponent-js" type="button">Player</button>
@@ -26,19 +26,19 @@
           <form class="game-form-options">
             <h3>Names</h3>
             <label for="player1-name" class="player-label">Player 1
-              <input type="text" id="player1-name" name="player1-name" />
+              <input type="text" id="player1-name" class="player-input-js" name="player1-name" />
             </label>
             <label for="player2-name" class="player-label">Player 2
-              <input type="text" id="player2-name" name="player2-name" />
+              <input type="text" id="player2-name" class="player-input-js" name="player2-name" />
             </label>
             <h3>Marks</h3>
               <div class="images">
-                <div class="mark-img">
-                  <img src="images/x.png" alt="" />
+                <div class="mark-img mark-div-js">
+                  <img src="images/x.png" alt="X" class="mark-img-js" />
                   <p>Player 1</p>
                 </div>
-                <div class="mark-img">
-                  <img src="images/o.png" alt=""/>
+                <div class="mark-img mark-div-js">
+                  <img src="images/o.png" alt="O" class="mark-img-js"/>
                   <p>Player 2</p>
                 </div>
               </div>
@@ -47,7 +47,7 @@
         </div>
 
         <!-- Game Mode Interface -->
-        <div class="game-div container game-js">
+        <div class="game-div container game-js hidden-right">
           <div class="players-div container">
             <h2 class="matchup-js"></h2>
           </div>
@@ -67,7 +67,7 @@
           <div class="result-div container">
             <div class="move-div bottom-container">
               <p>Now Moves</p>
-              <p id="current-move-js">X</p>
+              <p id="current-move-js"></p>
             </div>
             <div class="winner-msg bottom-container">
               <p id="game-result-js">Winner is Player1</p>
