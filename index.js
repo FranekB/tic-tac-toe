@@ -91,16 +91,17 @@ const game = (() => {
   //DOM Cache
   let squares = Array.from(document.querySelectorAll(".gameboard-square"));
   //let startButton = document.querySelector("#start-btn")
-  let resetButton = document.querySelector("#reset-btn");
-  let matchUpDiv = document.querySelector(".players-div h2");
-  let currentMoveDiv = document.querySelector("#move-para");
-  let resultDiv = document.querySelector("#result-para");
-  let changeOptionButton = document.querySelector("#change-option-btn");
-  let gameDiv = document.querySelector(".game-div");
-  let gameOptionsDiv = document.querySelector(".game-opponent-options");
+  let resetButton = document.querySelector(".reset-btn-js");
+  let matchUpDiv = document.querySelector(".matchup-js");
+  let currentMoveDiv = document.querySelector("#current-move-js");
+  let resultDiv = document.querySelector("#game-result-js");
+  let changeOptionButton = document.querySelector("#change-options-js");
+  let gameDiv = document.querySelector(".game-js");
+  let gameOptionsDiv = document.querySelector(".options-opponent-js");
 
-  let chooseButtons = document.querySelectorAll(".choose-btn");
-  let formDiv = document.querySelector(".game-div-options")
+  let chooseButtons = document.querySelectorAll(".choose-opponent-js");
+  let formDiv = document.querySelector(".game-options-js");
+  let startButton = document.querySelector(".start-btn-js");
   //bind events
   for(square of squares){
     square.addEventListener("click", setMark)
@@ -108,6 +109,7 @@ const game = (() => {
   //startButton.addEventListener("click", startGame)
   resetButton.addEventListener("click", restartGame)
   changeOptionButton.addEventListener("click", bringOptions)
+  startButton.addEventListener("click", startGame)
 
   function startGame(){
     gameState = "Playing";

@@ -16,12 +16,12 @@
 
       <main>
         <!-- Game Options -->
-        <div class="game-opponent-options options-container">
+        <div class="game-opponent-options options-container options-opponent-js">
             <h2>Choose Your Opponent</h2>
-            <button class="btn choose-btn" type="button">Computer</button>
-            <button class="btn choose-btn" type="button">Player</button>
+            <button class="btn choose-btn choose-opponent-js" type="button">Computer</button>
+            <button class="btn choose-btn choose-opponent-js" type="button">Player</button>
         </div>
-        <div class="game-div-options options-container">
+        <div class="game-div-options options-container game-options-js">
           <h2>Game Options</h2>
           <form class="game-form-options">
             <h3>Names</h3>
@@ -42,14 +42,14 @@
                   <p>Player 2</p>
                 </div>
               </div>
-            <button type="button" class="btn">Start Game</button>
+            <button type="button" class="btn start-btn start-btn-js">Start Game</button>
           </form>
         </div>
 
         <!-- Game Mode Interface -->
-        <div class="game-div container">
+        <div class="game-div container game-js">
           <div class="players-div container">
-            <h2></h2>
+            <h2 class="matchup-js"></h2>
           </div>
 
           <div class="gameboard container">
@@ -67,14 +67,14 @@
           <div class="result-div container">
             <div class="move-div bottom-container">
               <p>Now Moves</p>
-              <p id="move-para">X</p>
+              <p id="current-move-js">X</p>
             </div>
             <div class="winner-msg bottom-container">
-              <p id="result-para">Winner is Player1</p>
+              <p id="game-result-js">Winner is Player1</p>
             </div>
             <div class="game-options bottom-container">
-              <button id="reset-btn" class="btn" type="button">Reset Game</button>
-              <button id="change-option-btn" type="button" class="btn">Change options</button>
+              <button id="reset-btn" class="btn reset-btn-js" type="button">Reset Game</button>
+              <button id="change-options-js" type="button" class="btn">Change options</button>
             </div>
           </div>
         </div>
