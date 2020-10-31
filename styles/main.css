@@ -2,12 +2,8 @@ html {
   box-sizing: border-box;
   overflow-x: hidden;
 }
+/*MAIN GAME MOMENT*/
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-}
 /*Typography*/
 
 h1 {
@@ -21,76 +17,57 @@ h2 {
 h3{
   font-size: 1.5rem;
 }
-.page-wrapper{
+
+/*Positioning*/
+
+.page-wrapper {
   position: relative;
   width: 90%;
-  margin: auto;
-  background-color: green;
   min-height: 100vh;
+  margin: auto;
 }
 
-#header{
+#header {
   width:50%;
-  margin: auto;
+  margin: 0 auto;
   padding-top: 1em;
   text-align: center;
 }
 
-.container{
+.container {
   width: 60%;
-  background: red;
   margin: 1.5em auto;
-  border: 1px solid yellow;
   text-align: center;
-}
-
-
-.gameboard {
-  border: 2px solid blue;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 0px 0px;
-  width: 400px;
-}
-
-.gameboard-square {
-  background-color: green;
-  height: 130px;
-  line-height: 130px;
-  font-size: 4rem;
-  border: 2px solid red;
 }
 
 .game-div {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  margin-top: 5em;
+  margin-top: 3em;
+
   transition: 0.5s ease-out;
   transition-delay: 750ms;
 }
 
+.gameboard {
+  width: 400px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 2px solid blue;
+}
+
+.gameboard-square{
+  min-height: 130px;
+  line-height: 130px;
+}
+
+
 .result-div {
-  width: 100%;
+  width: 70%;
   display: flex;
   justify-content: center;
   font-size: 1.25rem;
-}
-
-.hidden-right {
-  transform: translate(150%);
-  transition: 0.5s ease-out;
-}
-
-
-
-
-.result-div{
-  display: flex;
-  justify-content: center;
-  width: 70%;
-  min-height: 100px;
 }
 
 .bottom-container{
@@ -105,27 +82,62 @@ h3{
 }
 
 .winner-msg{
-  width: 50%;
+  width: 60%;
 }
 
-.btn {
-  min-width: 100px;
-  border: none;
-  background: blue;
-  color: white;
-  border-radius: 10px;
-  margin: 5px;
-  padding: 0.3em;
+/*Styling*/
+
+.page-wrapper {
+  background-color: green;
+}
+
+.container {
+  background-color: red;
+  border: 1px solid yellow;
+}
+
+.gameboard-square {
+  font-size: 4rem;
+  border: 2px solid red;
+  background-color: green;
   cursor: pointer;
 }
 
 
-/** Initial form/game options **/
+
+/*Transitions*/
+
+.hidden-right {
+  transform: translate(150%);
+  transition: 0.5s ease-out;
+}
+
+
+
+/*Buttons*/
+
+.btn {
+  min-width: 100px;
+  margin: 5px;
+  padding: 0.3em;
+  border-radius: 10px;
+  color: white;
+  background: blue;
+  border: none;
+  cursor: pointer;
+}
+
+.start-btn{
+  margin-top:1.5em;
+}
+
+/**GAME OPTIONS **/
+
 .options-container h2,
 .options-container h3 {
-  margin-bottom: 0.25em;
-  border-bottom: 1px solid grey;
   width: 90%;
+  border-bottom: 1px solid grey;
+  margin-bottom: 0.25em;
   padding-bottom: 0.15em;
 }
 
@@ -133,36 +145,20 @@ h3{
   width: 40%;
   margin-top: 0.5em;
 }
+
 .options-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-radius: 10px;
   padding: 0.75em 0;
   text-align: center;
-  border-radius: 10px;
 }
 
-
-/**VISIBILITY AND ANIMATIONS OF FORMS **/
-
-
-.images{
+.game-form-options{
   display: flex;
-  justify-content: center;
-}
-
-.mark-img{
-  margin-top:1em;
-  margin-left: 1em;
-  width: 15%;
-  border: 1px solid black;
-  padding: 1em;
-}
-
-
-img{
-  width: 100%;
-  margin-bottom: 0.5em;
+  flex-direction: column;
+  align-items: center;
 }
 
 input{
@@ -178,53 +174,80 @@ input:focus{
   outline: none;
 }
 
-.game-opponent-options {
-  position: absolute;
-  left: 50%;
-  transition: 0.5s ease-out;
-  transform: translate(-400%);
-  width: 30%;
-  margin: 2em auto 2em;
-  background-color: red;
-  transition-delay: 500ms;
-}
-
-.visible-left{
-  transform: translate(-50%);
-  transition: transform 0.5s ease-out;
-}
-
-.game-div-options{
-  background-color: red;
-  transform: translate(0%, 400%);
-  transition: transform 0.5s ease-in;
-}
-
-.hidden{
-  position: absolute;
-  overflow: hidden;
-  left: 50%;
-  width: 30%;
-  height: 55vh;
-  transform: translate(-50%, 40%);
-}
-.visible-bottom{
-  transform: translate(0%);
-  margin: 20px auto;
-  transition: transform 0.5s ease-out;
-}
-
-.game-form-options{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .player-label{
   margin: 0.5em;
   width: 50%;
 }
 
-.start-btn{
-  margin-top:1.5em;
+.images {
+  display: flex;
+  justify-content: center;
+}
+
+.mark-img {
+  width: 15%;
+  margin-top:1em;
+  margin-left: 1em;
+  padding: 1em;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+
+img {
+  width: 100%;
+  margin-bottom: 0.5em;
+}
+
+
+/*First Div visible and invisible transitions + wrapper to make it appear*/
+
+.game-opponent-options {
+  width: 30%;
+  margin: 10px auto;
+  background-color: red;
+
+  transition: transform 0.5s ease-out;
+  transition-delay: 500ms;
+  transform: translate(-300%);
+}
+
+.visible-left{
+  transform: translate(0%);
+  transition: transform 0.5s ease-out;
+}
+
+.wrapper-hidden{
+  position: absolute;
+  overflow: hidden;
+  left: 50%;
+  transform: translate(-50%);
+  width: 100%;
+}
+
+/*Second Div visible and invisible transitions + wrapper to make it appear*/
+
+.game-div-options{
+  background-color: red;
+
+  transform: translate(0%, 400%);
+  transition: transform 0.5s ease-in;
+}
+
+
+.visible-bottom{
+  margin: 0.25em auto;
+
+  transform: translate(0%);
+  transition: transform 0.5s ease-out;
+}
+
+.hidden{
+  width: 30%;
+  min-height: 61vh;
+  position: absolute;
+  overflow: hidden;
+  left: 50%;
+
+  transform: translate(-50%, 30%);
 }
