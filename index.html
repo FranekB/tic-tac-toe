@@ -53,23 +53,26 @@
         <div class="game-div container game-js hidden-right">
           <div class="players-div container matchup-js">
             <div class="matchup-mark matchup-mark-js">
+              <p></p>
             </div>
               <h2></h2>
             <div class="matchup-mark matchup-mark-js">
+              <p></p>
             </div>
           </div>
-
-          <div class="gameboard container">
-          <!-- O's and X's goes here -->
-            <div data-position="00" class="gameboard-square"></div>
-            <div data-position="01" class="gameboard-square"></div>
-            <div data-position="02" class="gameboard-square"></div>
-            <div data-position="10" class="gameboard-square"></div>
-            <div data-position="11" class="gameboard-square"></div>
-            <div data-position="12" class="gameboard-square"></div>
-            <div data-position="20" class="gameboard-square"></div>
-            <div data-position="21" class="gameboard-square"></div>
-            <div data-position="22" class="gameboard-square"></div>
+          <div class="gameboard-outer">
+            <div class="gameboard container">
+            <!-- O's and X's goes here -->
+              <div data-position="00" class="gameboard-square"></div>
+              <div data-position="01" class="gameboard-square"></div>
+              <div data-position="02" class="gameboard-square"></div>
+              <div data-position="10" class="gameboard-square"></div>
+              <div data-position="11" class="gameboard-square"></div>
+              <div data-position="12" class="gameboard-square"></div>
+              <div data-position="20" class="gameboard-square"></div>
+              <div data-position="21" class="gameboard-square"></div>
+              <div data-position="22" class="gameboard-square"></div>
+            </div>
           </div>
           <div class="result-div container">
             <div class="move-div bottom-container">
@@ -77,7 +80,7 @@
               <p id="current-move-js"></p>
             </div>
             <div class="winner-msg bottom-container">
-              <p id="game-result-js">Winner is Player1</p>
+              <p id="game-result-js" class="invisible-result"></p>
             </div>
             <div class="game-options bottom-container">
               <button id="reset-btn" class="btn reset-btn-js" type="button">Reset Game</button>

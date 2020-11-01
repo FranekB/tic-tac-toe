@@ -70,16 +70,16 @@ const gameBoard = (() => {
     return gameboard
   }
 
+  const publicAPI = {
+      getSquare,
+      getGameBoard,
+      clearGameBoard,
+      setSquare,
+      isOver,
+      isAllMarksPlaced
+    };
 
-  return {
-    getSquare,
-    getGameBoard,
-    clearGameBoard,
-    setSquare,
-    isOver,
-    isAllMarksPlaced
-  };
-
+  return publicAPI
 })()
 
 
@@ -90,38 +90,19 @@ const game = (() => {
   let gameState;
 
   //DOM Cache
-  const matchupHeader = document.querySelector(".matchup-js");
-  const boardSquares = Array.from(document.querySelectorAll(".gameboard-square"));
-  const gameDiv = document.querySelector(".game-js");
-
-  const currentPlayerDiv = document.querySelector("#current-move-js");
-  const gameResultDiv = document.querySelector("#game-result-js");
   const resetButton = document.querySelector(".reset-btn-js");
-  const changeOptionsButton = document.querySelector("#change-options-js");
-
-  const leftOptionsWrapper = document.querySelector(".wrapper-hidden");
-  const opponentChoiceDiv = document.querySelector(".options-opponent-js");
-  const chooseOpponentButtons = document.querySelectorAll(".choose-opponent-js");
-  const gameOptionsDiv = document.querySelector(".game-options-js");
-  const bottomOptionsWrapper = document.querySelector(".hidden");
-  const playerNameInputs = document.querySelectorAll(".player-input-js");
-  const playerMarkDivs = document.querySelectorAll(".mark-div-js");
   const startGameButton = document.querySelector(".start-btn-js");
+  const boardSquares = Array.from(document.querySelectorAll(".gameboard-square"));
+  const playerNameInputs = document.querySelectorAll(".player-input-js");
 
   //BIND EVENTS
   for(const square of boardSquares){
     square.addEventListener("click", placeMarkOnGameBoard)
   }
-  for(const button of chooseOpponentButtons){
-    button.addEventListener("click", showBottomOptions);
-  }
+
   resetButton.addEventListener("click", restartGame)
-  changeOptionsButton.addEventListener("click", showLeftOptions)
   startGameButton.addEventListener("click", startGame)
 
-  for (mark of playerMarkDivs){
-    mark.addEventListener("click", changePlayersMarks);
-  }
 
   function createPlayers(){
     const marksImg = document.querySelectorAll(".mark-img-js");
@@ -133,48 +114,28 @@ const game = (() => {
 
   function startGame(){
     createPlayers()
-    player1.getMark() === "X" ? currentPlayer = player1 : currentPlayer = player2;
+    currentPlayer = player1;
     gameState = "Playing";
 
     //Hide forms
-    setTimeout(function(){bottomOptionsWrapper.style.width = "0%";}, 500);
-    setTimeout(function(){leftOptionsWrapper.style.width = "0%";}, 1000);
-    hideOptions();
-    addNamesToInterface();
+    displayController.hideForms()
     restartGame();
-
-    function hideOptions(){
-      gameOptionsDiv.classList.toggle("visible-bottom");
-      opponentChoiceDiv.classList.toggle("visible-left");
-      gameDiv.classList.toggle("hidden-right");
-    }
-  }
-
-  function addNamesToInterface(){
-    matchupHeader.textContent = `${player1.getName()} ${player1.getMark()} vs ${player2.getName()} ${player2.getMark()}`
-    currentPlayerDiv.textContent = `${currentPlayer.getName()}`
+    displayController.addNamesToInterface(player1, player2);
   }
 
   function restartGame(){
     gameState = "Playing";
+    currentPlayer = player1;
     gameBoard.clearGameBoard();
+    displayController.clearResults()
+    displayController.addCurrentMoveText(currentPlayer);
     render()
-  }
-
-  function showBottomOptions(){
-    gameOptionsDiv.classList.toggle("visible-bottom");
-    bottomOptionsWrapper.style.width = "30%";
-  }
-
-  function showLeftOptions(){
-    gameDiv.classList.toggle("hidden-right");
-    setTimeout(function(){opponentChoiceDiv.classList.toggle("visible-left")}, 400);
-    leftOptionsWrapper.style.width = "100%"
   }
 
 
   //switches current player
   function switchCurrentPlayer(player){
+    if (gameState != "Playing") return;
     currentPlayer == player1 ? currentPlayer = player2 : currentPlayer = player1
   }
 
@@ -186,26 +147,13 @@ const game = (() => {
     if(gameBoard.getSquare(squarePosition) == ""){
       gameBoard.setSquare(squarePosition, currentPlayer.getMark())
     }
-    switchCurrentPlayer()
     render()
+    switchCurrentPlayer()
+    displayController.addCurrentMoveText(currentPlayer);
   }
 
-  function changePlayersMarks(){
-    const tempDiv = playerMarkDivs[0].innerHTML;
-    playerMarkDivs[0].innerHTML = playerMarkDivs[1].innerHTML;
-    playerMarkDivs[1].innerHTML = tempDiv;
-    playerMarkDivs[0].lastElementChild.textContent = "Player 1";
-    playerMarkDivs[1].lastElementChild.textContent = "Player 2";
-  }
 
-  function showGameResult(){
-    if (gameState == "Tie"){
-      gameResultDiv.textContent = "It's a Tie. Try Again!"
-    }
-    else if (gameState == "Finished"){
-      currentPlayer == player1 ? gameResultDiv.textContent = `The winner is ${player2.getName()}` : gameResultDiv.textContent = `The winner is ${player1.getName()}`
-    }
-  }
+
 
   function checkGameState(){
     if (gameBoard.isOver()){
@@ -219,9 +167,8 @@ const game = (() => {
   }
   //renders gameboard on a screen
   function render(){
-    addNamesToInterface();
     if(checkGameState()){
-      showGameResult()
+      displayController.showGameResult(gameState, currentPlayer)
     };
     let i = 0
     for(row of gameBoard.getGameBoard()){
@@ -231,4 +178,99 @@ const game = (() => {
       }
     }
   }
+})()
+
+
+const displayController = (() => {
+
+  //Store DOM
+  const leftOptionsWrapper = document.querySelector(".wrapper-hidden");
+  const bottomOptionsWrapper = document.querySelector(".hidden");
+  const gameDiv = document.querySelector(".game-js");
+  const opponentChoiceDiv = document.querySelector(".options-opponent-js");
+  const gameOptionsDiv = document.querySelector(".game-options-js");
+  const chooseOpponentButtons = document.querySelectorAll(".choose-opponent-js");
+  const changeOptionsButton = document.querySelector("#change-options-js");
+  const gameResultDiv = document.querySelector("#game-result-js");
+  const currentPlayerDiv = document.querySelector("#current-move-js");
+  const matchupDivs = document.querySelectorAll(".matchup-mark-js")
+  const matchupHeader = document.querySelector(".matchup-js");
+  const playerMarkDivs = document.querySelectorAll(".mark-div-js");
+
+  //Bind Events
+
+  for(const button of chooseOpponentButtons){
+    button.addEventListener("click", showBottomOptions);
+  }
+  changeOptionsButton.addEventListener("click", showLeftOptions)
+
+  for (mark of playerMarkDivs){
+    mark.addEventListener("click", changePlayersMarks);
+  }
+
+  const hideForms = () =>{
+    setTimeout(function(){bottomOptionsWrapper.style.width = "0%";}, 500);
+    setTimeout(function(){leftOptionsWrapper.style.width = "0%";}, 1000);
+    gameOptionsDiv.classList.toggle("visible-bottom");
+    opponentChoiceDiv.classList.toggle("visible-left");
+    gameDiv.classList.toggle("hidden-right");
+  }
+
+  const clearResults = () => {
+    gameResultDiv.classList.remove("visible-game-result")
+    gameResultDiv.textContent = "";
+  }
+
+  function showBottomOptions(){
+    gameOptionsDiv.classList.toggle("visible-bottom");
+    bottomOptionsWrapper.style.width = "30%";
+  }
+
+  function showLeftOptions(){
+    gameDiv.classList.toggle("hidden-right");
+    setTimeout(function(){opponentChoiceDiv.classList.toggle("visible-left")}, 400);
+    leftOptionsWrapper.style.width = "100%"
+  }
+
+  function changePlayersMarks(){
+    const tempDiv = playerMarkDivs[0].innerHTML;
+    playerMarkDivs[0].innerHTML = playerMarkDivs[1].innerHTML;
+    playerMarkDivs[1].innerHTML = tempDiv;
+    playerMarkDivs[0].lastElementChild.textContent = "Player 1";
+    playerMarkDivs[1].lastElementChild.textContent = "Player 2";
+  }
+
+  const showGameResult = (gameState, currentPlayer) => {
+    if (gameState == "Tie"){
+      gameResultDiv.textContent = "It's a Tie. Try Again!"
+    }
+    else if (gameState == "Finished"){
+      gameResultDiv.textContent = `The winner is ${currentPlayer.getName()}!`
+    }
+    gameResultDiv.classList.toggle("visible-game-result");
+  }
+
+  const addCurrentMoveText = (currentPlayer) => {
+      currentPlayerDiv.textContent = `${currentPlayer.getName()}`
+    }
+
+  const addNamesToInterface = (player1, player2) => {
+      const matchupName = matchupHeader.querySelector("h2");
+      const firstImg = playerMarkDivs[0].firstElementChild.cloneNode();
+      const secondImg = playerMarkDivs[1].firstElementChild.cloneNode();
+      firstImg.classList.add("matchup-img");
+      secondImg.classList.add("matchup-img");
+      matchupDivs[0].replaceChild(firstImg, matchupDivs[0].firstElementChild);
+      matchupDivs[1].replaceChild(secondImg, matchupDivs[1].firstElementChild);
+      matchupName.textContent = `${player1.getName()} vs ${player2.getName()}`
+    }
+  const publicAPI = {
+    hideForms,
+    clearResults,
+    showGameResult,
+    addCurrentMoveText,
+    addNamesToInterface
+  }
+
+  return publicAPI;
 })()

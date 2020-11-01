@@ -52,6 +52,7 @@ h3{
 .players-div h2{
   flex-shrink: 0;
 }
+
 .matchup-mark{
   display: flex;
   justify-content: center;
@@ -75,16 +76,28 @@ h3{
   transition-delay: 750ms;
 }
 
+.gameboard-outer{
+  position: relative;
+  width: 40%;
+  padding-bottom: 40%;
+  margin: auto;
+}
+
 .gameboard {
-  width: 400px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  border: 2px solid blue;
+  grid-template-rows: repeat(3, 1fr);
+  grid-gap: 3px;
 }
 
 .gameboard-square{
-  min-height: 130px;
-  line-height: 130px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
 }
 
 
@@ -100,7 +113,6 @@ h3{
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  border: 1px solid blue;
   margin: 1em;
   padding: 0.5em;
   width: 33%;
@@ -108,6 +120,17 @@ h3{
 
 .winner-msg{
   width: 60%;
+}
+
+.invisible-result{
+  opacity:0;
+  font-size: 0.25rem
+}
+.visible-game-result{
+  opacity: 1;
+  font-size: 1.75rem;
+  transition: opacity 1s, font-size 0.5s;
+
 }
 
 /*Styling*/
@@ -118,12 +141,10 @@ h3{
 
 .container {
   background-color: red;
-  border: 1px solid yellow;
 }
 
 .gameboard-square {
   font-size: 4rem;
-  border: 2px solid red;
   background-color: green;
   cursor: pointer;
 }
