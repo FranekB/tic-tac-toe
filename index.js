@@ -2,27 +2,31 @@ const playerFactory = (name, mark) => {
 
   const getName = () => name;
   const getMark = () => mark;
-  return { getName, getMark };
+  const makeMove = (position) =>{
+    gameBoard.setSquare(position, mark)
+  }
+  return { getName, getMark, makeMove };
 }
 
 const gameBoard = (() => {
-  let gameboard = [["", "", ""], ["", "", ""], ["", "", ""]];
+  let _gameboard = [["", "", ""], ["", "", ""], ["", "", ""]];
+
   const clearGameBoard = () => {
-    gameboard = [["", "", ""], ["", "", ""], ["", "", ""]];
+    _gameboard = [["", "", ""], ["", "", ""], ["", "", ""]];
   }
 
-  const getSquare = (position) => {
-    return gameboard[position[0]][position[1]]
+  const isEmptySquare = (position) => {
+    return _gameboard[position[0]][position[1]] == ""
   }
   const setSquare = (position, mark) => {
-    gameboard[position[0]][position[1]] = mark
+    _gameboard[position[0]][position[1]] = mark
   }
 
   const getState = () => gameState;
 
   function getRows(){
     rows = []
-    for(row of gameboard){
+    for(row of _gameboard){
       rows.push(row)
     }
   return rows
@@ -33,7 +37,7 @@ const gameBoard = (() => {
     for (let i = 0; i < 3; i++){
       let column = []
       for (let j = 0; j < 3; j++){
-        column.push(gameboard[j][i])
+        column.push(_gameboard[j][i])
       }
       columns.push(column)
     }
@@ -44,10 +48,10 @@ const gameBoard = (() => {
     let firstDiagonal = []
     let secondDiagonal = []
     for (let i = 0; i < 3; i++){
-      firstDiagonal.push(gameboard[i][i])
+      firstDiagonal.push(_gameboard[i][i])
       for (let j = 0; j < 3; j++){
         if(j == 2 - i){
-          secondDiagonal.push(gameboard[i][j])
+          secondDiagonal.push(_gameboard[i][j])
         }
       }
 
@@ -56,26 +60,26 @@ const gameBoard = (() => {
   }
 
 
-  const isOver = () => {
+  const isThreeInARow = () => {
     const winningPositions = ["X,X,X", "O,O,O"]
     const position = [getDiagonals(), getColumns(), getRows()].flat()
     return position.some(array => winningPositions.includes(array.join(",")))
   }
 
   const isAllMarksPlaced = () => {
-    return !gameboard.flat().includes("")
+    return !_gameboard.flat().includes("")
   }
 
   const getGameBoard = () => {
-    return gameboard
+    return _gameboard
   }
 
   const publicAPI = {
-      getSquare,
+      isEmptySquare,
       getGameBoard,
       clearGameBoard,
       setSquare,
-      isOver,
+      isThreeInARow,
       isAllMarksPlaced
     };
 
@@ -94,12 +98,10 @@ const game = (() => {
   const startGameButton = document.querySelector(".start-btn-js");
   const boardSquares = Array.from(document.querySelectorAll(".gameboard-square"));
   const playerNameInputs = document.querySelectorAll(".player-input-js");
+  const gameboardDiv = document.querySelector(".gameboard-js");
 
   //BIND EVENTS
-  for(const square of boardSquares){
-    square.addEventListener("click", placeMarkOnGameBoard)
-  }
-
+  gameboardDiv.addEventListener("click", placeMarkOnGameBoard)
   resetButton.addEventListener("click", restartGame)
   startGameButton.addEventListener("click", startGame)
 
@@ -139,24 +141,23 @@ const game = (() => {
     currentPlayer == player1 ? currentPlayer = player2 : currentPlayer = player1
   }
 
+
   //Adds mark of current player to the gameboard
   function placeMarkOnGameBoard(event){
+    if (!event.target.classList.contains("gameboard-square")) return
     if (gameState != "Playing") return
 
     const squarePosition = Array.from(event.target.getAttribute("data-position"));
-    if(gameBoard.getSquare(squarePosition) == ""){
-      gameBoard.setSquare(squarePosition, currentPlayer.getMark())
+    if(gameBoard.isEmptySquare(squarePosition)){
+      currentPlayer.makeMove(squarePosition)
     }
     render()
     switchCurrentPlayer()
     displayController.addCurrentMoveText(currentPlayer);
   }
 
-
-
-
-  function checkGameState(){
-    if (gameBoard.isOver()){
+  function isGameOver(){
+    if (gameBoard.isThreeInARow()){
       gameState = "Finished"
       return true
     }
@@ -167,7 +168,7 @@ const game = (() => {
   }
   //renders gameboard on a screen
   function render(){
-    if(checkGameState()){
+    if(isGameOver()){
       displayController.showGameResult(gameState, currentPlayer)
     };
     let i = 0
@@ -264,6 +265,10 @@ const displayController = (() => {
       matchupDivs[1].replaceChild(secondImg, matchupDivs[1].firstElementChild);
       matchupName.textContent = `${player1.getName()} vs ${player2.getName()}`
     }
+
+  const clearGameboardDisplay = () => {
+
+  }
   const publicAPI = {
     hideForms,
     clearResults,
