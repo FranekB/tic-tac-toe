@@ -96,12 +96,11 @@ const game = (() => {
   //DOM Cache
   const resetButton = document.querySelector(".reset-btn-js");
   const startGameButton = document.querySelector(".start-btn-js");
-  const boardSquares = Array.from(document.querySelectorAll(".gameboard-square"));
   const playerNameInputs = document.querySelectorAll(".player-input-js");
   const gameboardDiv = document.querySelector(".gameboard-js");
 
   //BIND EVENTS
-  gameboardDiv.addEventListener("click", placeMarkOnGameBoard)
+  gameboardDiv.addEventListener("click", makeMove)
   resetButton.addEventListener("click", restartGame)
   startGameButton.addEventListener("click", startGame)
 
@@ -129,9 +128,9 @@ const game = (() => {
     gameState = "Playing";
     currentPlayer = player1;
     gameBoard.clearGameBoard();
-    displayController.clearResults()
+    displayController.clearGameBoardDiv();
+    displayController.clearResults();
     displayController.addCurrentMoveText(currentPlayer);
-    render()
   }
 
 
@@ -143,40 +142,28 @@ const game = (() => {
 
 
   //Adds mark of current player to the gameboard
-  function placeMarkOnGameBoard(event){
+  function makeMove(event){
     if (!event.target.classList.contains("gameboard-square")) return
     if (gameState != "Playing") return
 
     const squarePosition = Array.from(event.target.getAttribute("data-position"));
     if(gameBoard.isEmptySquare(squarePosition)){
       currentPlayer.makeMove(squarePosition)
+      displayController.renderMove(event.target, currentPlayer.getMark())
+      isGameOver()
+      switchCurrentPlayer()
     }
-    render()
-    switchCurrentPlayer()
     displayController.addCurrentMoveText(currentPlayer);
   }
 
   function isGameOver(){
     if (gameBoard.isThreeInARow()){
       gameState = "Finished"
-      return true
+      displayController.showGameResult(gameState, currentPlayer)
     }
     else if(gameBoard.isAllMarksPlaced()){
       gameState = "Tie"
-      return true
-    }
-  }
-  //renders gameboard on a screen
-  function render(){
-    if(isGameOver()){
       displayController.showGameResult(gameState, currentPlayer)
-    };
-    let i = 0
-    for(row of gameBoard.getGameBoard()){
-      for(col of row){
-        boardSquares[i].textContent = col
-        i += 1
-      }
     }
   }
 })()
@@ -197,6 +184,7 @@ const displayController = (() => {
   const matchupDivs = document.querySelectorAll(".matchup-mark-js")
   const matchupHeader = document.querySelector(".matchup-js");
   const playerMarkDivs = document.querySelectorAll(".mark-div-js");
+  const boardSquares = Array.from(document.querySelectorAll(".gameboard-square"));
 
   //Bind Events
 
@@ -266,15 +254,23 @@ const displayController = (() => {
       matchupName.textContent = `${player1.getName()} vs ${player2.getName()}`
     }
 
-  const clearGameboardDisplay = () => {
+  const renderMove = (squarePosition, mark) => {
+    squarePosition.textContent = mark;
+  }
 
+  const clearGameBoardDiv = () => {
+    for (squares of boardSquares){
+      squares.textContent = ""
+    }
   }
   const publicAPI = {
     hideForms,
     clearResults,
     showGameResult,
     addCurrentMoveText,
-    addNamesToInterface
+    addNamesToInterface,
+    renderMove,
+    clearGameBoardDiv
   }
 
   return publicAPI;
