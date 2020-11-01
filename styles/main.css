@@ -2,7 +2,7 @@ html {
   box-sizing: border-box;
   overflow-x: hidden;
 }
-/*MAIN GAME MOMENT*/
+/*MAIN GAME CONTENT*/
 
 /*Typography*/
 
@@ -38,6 +38,31 @@ h3{
   width: 60%;
   margin: 1.5em auto;
   text-align: center;
+}
+
+.players-div {
+  display: flex;
+  justify-content: center;
+  margin: 0.25em auto;
+  height: 100px;
+  width: 70%;
+  line-height: 100px;
+}
+
+.players-div h2{
+  flex-shrink: 0;
+}
+.matchup-mark{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25%;
+  height: 100%;
+}
+
+.matchup-img{
+  width: 50px;
+  margin: 0;
 }
 
 .game-div {
