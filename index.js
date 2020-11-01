@@ -57,8 +57,8 @@ const gameBoard = (() => {
 
 
   const isOver = () => {
-    let winningPositions = ["X,X,X", "O,O,O"]
-    let position = [getDiagonals(), getColumns(), getRows()].flat()
+    const winningPositions = ["X,X,X", "O,O,O"]
+    const position = [getDiagonals(), getColumns(), getRows()].flat()
     return position.some(array => winningPositions.includes(array.join(",")))
   }
 
@@ -82,66 +82,77 @@ const gameBoard = (() => {
 
 })()
 
+
 const game = (() => {
   let player1;
   let player2;
   let currentPlayer;
-  let gameState = "Playing"
+  let gameState;
 
   //DOM Cache
-  let squares = Array.from(document.querySelectorAll(".gameboard-square"));
-  //let startButton = document.querySelector("#start-btn")
-  let resetButton = document.querySelector(".reset-btn-js");
-  let matchUpDiv = document.querySelector(".matchup-js");
-  let currentMoveDiv = document.querySelector("#current-move-js");
-  let resultDiv = document.querySelector("#game-result-js");
-  let changeOptionButton = document.querySelector("#change-options-js");
-  let gameDiv = document.querySelector(".game-js");
-  let gameOptionsDiv = document.querySelector(".options-opponent-js");
-  let chooseButtons = document.querySelectorAll(".choose-opponent-js");
-  let formDiv = document.querySelector(".game-options-js");
-  let startButton = document.querySelector(".start-btn-js");
-  let inputs = document.querySelectorAll(".player-input-js");
-  let markDivs = document.querySelectorAll(".mark-div-js");
-  let hiddenDiv = document.querySelector(".hidden");
-  let hiddenDiv2 = document.querySelector(".wrapper-hidden");
-  //bind events
-  for(const square of squares){
-    square.addEventListener("click", setMark)
+  const matchupHeader = document.querySelector(".matchup-js");
+  const boardSquares = Array.from(document.querySelectorAll(".gameboard-square"));
+  const gameDiv = document.querySelector(".game-js");
+
+  const currentPlayerDiv = document.querySelector("#current-move-js");
+  const gameResultDiv = document.querySelector("#game-result-js");
+  const resetButton = document.querySelector(".reset-btn-js");
+  const changeOptionsButton = document.querySelector("#change-options-js");
+
+  const leftOptionsWrapper = document.querySelector(".wrapper-hidden");
+  const opponentChoiceDiv = document.querySelector(".options-opponent-js");
+  const chooseOpponentButtons = document.querySelectorAll(".choose-opponent-js");
+  const gameOptionsDiv = document.querySelector(".game-options-js");
+  const bottomOptionsWrapper = document.querySelector(".hidden");
+  const playerNameInputs = document.querySelectorAll(".player-input-js");
+  const playerMarkDivs = document.querySelectorAll(".mark-div-js");
+  const startGameButton = document.querySelector(".start-btn-js");
+
+  //BIND EVENTS
+  for(const square of boardSquares){
+    square.addEventListener("click", placeMarkOnGameBoard)
   }
-  for(const button of chooseButtons){
-    button.addEventListener("click", bringForm);
+  for(const button of chooseOpponentButtons){
+    button.addEventListener("click", showBottomOptions);
   }
   resetButton.addEventListener("click", restartGame)
-  changeOptionButton.addEventListener("click", bringOptions)
-  startButton.addEventListener("click", startGame)
+  changeOptionsButton.addEventListener("click", showLeftOptions)
+  startGameButton.addEventListener("click", startGame)
 
-  for (mark of markDivs){
-    mark.addEventListener("click", switchMarks);
+  for (mark of playerMarkDivs){
+    mark.addEventListener("click", changePlayersMarks);
+  }
+
+  function createPlayers(){
+    const marksImg = document.querySelectorAll(".mark-img-js");
+    const player1Name = playerNameInputs[0].value || "Player 1";
+    const player2Name = playerNameInputs[1].value || "Player 2";
+    player1 = playerFactory(player1Name, marksImg[0].getAttribute("alt"))
+    player2 = playerFactory(player2Name, marksImg[1].getAttribute("alt"))
   }
 
   function startGame(){
-    let marksImg = document.querySelectorAll(".mark-img-js");
-    let player1Name = inputs[0].value || "Player 1";
-    let player2Name = inputs[1].value || "Player 2";
-    player1 = playerFactory(player1Name, marksImg[0].getAttribute("alt"))
-    player2 = playerFactory(player2Name, marksImg[1].getAttribute("alt"))
+    createPlayers()
     player1.getMark() === "X" ? currentPlayer = player1 : currentPlayer = player2;
-    setTimeout(function(){hiddenDiv.style.width = "0%";}, 500);
-    setTimeout(function(){hiddenDiv2.style.width = "0%";}, 1000);
+    gameState = "Playing";
 
-    function turnOffInterface(){
-      formDiv.classList.toggle("visible-bottom");
-      gameOptionsDiv.classList.toggle("visible-left");
+    //Hide forms
+    setTimeout(function(){bottomOptionsWrapper.style.width = "0%";}, 500);
+    setTimeout(function(){leftOptionsWrapper.style.width = "0%";}, 1000);
+    hideOptions();
+    addNamesToInterface();
+    restartGame();
+
+    function hideOptions(){
+      gameOptionsDiv.classList.toggle("visible-bottom");
+      opponentChoiceDiv.classList.toggle("visible-left");
       gameDiv.classList.toggle("hidden-right");
     }
+  }
 
-    gameState = "Playing";
-    turnOffInterface();
-    setInterface();
-    restartGame();
-    render();
-
+  function addNamesToInterface(){
+    matchupHeader.textContent = `${player1.getName()} ${player1.getMark()} vs ${player2.getName()} ${player2.getMark()}`
+    currentPlayerDiv.textContent = `${currentPlayer.getName()}`
   }
 
   function restartGame(){
@@ -150,15 +161,15 @@ const game = (() => {
     render()
   }
 
-  function bringForm(){
-    formDiv.classList.toggle("visible-bottom");
-    hiddenDiv.style.width = "30%";
+  function showBottomOptions(){
+    gameOptionsDiv.classList.toggle("visible-bottom");
+    bottomOptionsWrapper.style.width = "30%";
   }
 
-  function bringOptions(){
+  function showLeftOptions(){
     gameDiv.classList.toggle("hidden-right");
-    setTimeout(function(){gameOptionsDiv.classList.toggle("visible-left")}, 400);
-    hiddenDiv2.style.width = "100%"
+    setTimeout(function(){opponentChoiceDiv.classList.toggle("visible-left")}, 400);
+    leftOptionsWrapper.style.width = "100%"
   }
 
 
@@ -168,35 +179,31 @@ const game = (() => {
   }
 
   //Adds mark of current player to the gameboard
-  function setMark(event){
+  function placeMarkOnGameBoard(event){
     if (gameState != "Playing") return
 
-    let squarePosition = Array.from(event.target.getAttribute("data-position"));
-    if(gameBoard.getSquare(squarePosition)== ""){
+    const squarePosition = Array.from(event.target.getAttribute("data-position"));
+    if(gameBoard.getSquare(squarePosition) == ""){
       gameBoard.setSquare(squarePosition, currentPlayer.getMark())
     }
     switchCurrentPlayer()
     render()
   }
 
-  function switchMarks(){
-    let tempDiv = markDivs[0].innerHTML;
-    markDivs[0].innerHTML = markDivs[1].innerHTML;
-    markDivs[1].innerHTML = tempDiv;
-    markDivs[0].lastElementChild.textContent = "Player 1";
-    markDivs[1].lastElementChild.textContent = "Player 2";
-  }
-  function setInterface(){
-    matchUpDiv.textContent = `${player1.getName()} ${player1.getMark()} vs ${player2.getName()} ${player2.getMark()}`
-    currentMoveDiv.textContent = `${currentPlayer.getName()}`
+  function changePlayersMarks(){
+    const tempDiv = playerMarkDivs[0].innerHTML;
+    playerMarkDivs[0].innerHTML = playerMarkDivs[1].innerHTML;
+    playerMarkDivs[1].innerHTML = tempDiv;
+    playerMarkDivs[0].lastElementChild.textContent = "Player 1";
+    playerMarkDivs[1].lastElementChild.textContent = "Player 2";
   }
 
-  function displayResult(){
+  function showGameResult(){
     if (gameState == "Tie"){
-      resultDiv.textContent = "It's a Tie. Try Again!"
+      gameResultDiv.textContent = "It's a Tie. Try Again!"
     }
     else if (gameState == "Finished"){
-      currentPlayer == player1 ? resultDiv.textContent = `The winner is ${player2.getName()}` : resultDiv.textContent = `The winner is ${player1.getName()}`
+      currentPlayer == player1 ? gameResultDiv.textContent = `The winner is ${player2.getName()}` : gameResultDiv.textContent = `The winner is ${player1.getName()}`
     }
   }
 
@@ -212,17 +219,16 @@ const game = (() => {
   }
   //renders gameboard on a screen
   function render(){
-    setInterface();
+    addNamesToInterface();
     if(checkGameState()){
-      displayResult()
+      showGameResult()
     };
     let i = 0
     for(row of gameBoard.getGameBoard()){
       for(col of row){
-        squares[i].textContent = col
+        boardSquares[i].textContent = col
         i += 1
       }
     }
-
   }
 })()
