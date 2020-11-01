@@ -1,11 +1,12 @@
-const playerFactory = (name, mark) => {
+const playerFactory = (name, mark, markImg) => {
 
   const getName = () => name;
   const getMark = () => mark;
+  const getImg = () => markImg;
   const makeMove = (position) =>{
     gameBoard.setSquare(position, mark)
   }
-  return { getName, getMark, makeMove };
+  return { getName, getMark, makeMove, getImg };
 }
 
 const gameBoard = (() => {
@@ -109,8 +110,10 @@ const game = (() => {
     const marksImg = document.querySelectorAll(".mark-img-js");
     const player1Name = playerNameInputs[0].value || "Player 1";
     const player2Name = playerNameInputs[1].value || "Player 2";
-    player1 = playerFactory(player1Name, marksImg[0].getAttribute("alt"))
-    player2 = playerFactory(player2Name, marksImg[1].getAttribute("alt"))
+    const player1Img = marksImg[0]
+    const player2Img = marksImg[1]
+    player1 = playerFactory(player1Name, marksImg[0].getAttribute("alt"), player1Img)
+    player2 = playerFactory(player2Name, marksImg[1].getAttribute("alt"), player2Img)
   }
 
   function startGame(){
@@ -149,7 +152,7 @@ const game = (() => {
     const squarePosition = Array.from(event.target.getAttribute("data-position"));
     if(gameBoard.isEmptySquare(squarePosition)){
       currentPlayer.makeMove(squarePosition)
-      displayController.renderMove(event.target, currentPlayer.getMark())
+      displayController.renderMove(event.target, currentPlayer.getImg())
       isGameOver()
       switchCurrentPlayer()
     }
@@ -245,8 +248,8 @@ const displayController = (() => {
 
   const addNamesToInterface = (player1, player2) => {
       const matchupName = matchupHeader.querySelector("h2");
-      const firstImg = playerMarkDivs[0].firstElementChild.cloneNode();
-      const secondImg = playerMarkDivs[1].firstElementChild.cloneNode();
+      const firstImg = player1.getImg().cloneNode();
+      const secondImg = player2.getImg().cloneNode();
       firstImg.classList.add("matchup-img");
       secondImg.classList.add("matchup-img");
       matchupDivs[0].replaceChild(firstImg, matchupDivs[0].firstElementChild);
@@ -254,8 +257,10 @@ const displayController = (() => {
       matchupName.textContent = `${player1.getName()} vs ${player2.getName()}`
     }
 
-  const renderMove = (squarePosition, mark) => {
-    squarePosition.textContent = mark;
+  const renderMove = (squarePosition, markImg) => {
+    const markImage = markImg.cloneNode()
+    markImage.classList.add("gameboard-img");
+    squarePosition.appendChild(markImage);
   }
 
   const clearGameBoardDiv = () => {

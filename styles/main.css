@@ -100,6 +100,10 @@ h3{
   padding: 0;
 }
 
+.gameboard-img{
+  width: 50%;
+  margin: 0;
+}
 
 .result-div {
   width: 70%;
@@ -232,7 +236,7 @@ input:focus{
 
 .mark-img {
   width: 15%;
-  margin-top:1em;
+  margin-top: 1em;
   margin-left: 1em;
   padding: 1em;
   border: 1px solid black;
