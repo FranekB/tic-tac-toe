@@ -22,7 +22,6 @@ Project was made to learn how to organize JavaScripts code better by using modul
 Live version: https://franekb.github.io/tic-tac-toe/
 
 ## Features
-List of features ready and TODOs for future development
 * Form to choose our mark and player names
 * Reseting game from gameboard interface
 * Playing the game by clicking interface
