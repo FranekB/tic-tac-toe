@@ -215,7 +215,7 @@ const displayController = (() => {
 
   function showBottomOptions(){
     gameOptionsDiv.classList.toggle("visible-bottom");
-    bottomOptionsWrapper.style.width = "30%";
+    bottomOptionsWrapper.style.width = "100%";
   }
 
   function showLeftOptions(){
