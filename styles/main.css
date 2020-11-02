@@ -1,6 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 html {
   box-sizing: border-box;
   overflow-x: hidden;
+}
+
+*:focus{
+  outline: none;
+}
+
+:root {
+  --white: #FAF0CA;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
 }
 /*MAIN GAME CONTENT*/
 
@@ -32,12 +46,12 @@ h3{
   margin: 0 auto;
   padding-top: 1em;
   text-align: center;
+  color: rgba(230,230,230,0.9);
 }
 
 .container {
   width: 60%;
   margin: 1.5em auto;
-  text-align: center;
 }
 
 .players-div {
@@ -71,6 +85,7 @@ h3{
   flex-direction: column;
   justify-content: center;
   margin-top: 3em;
+  border-radius: 10px;
 
   transition: 0.5s ease-out;
   transition-delay: 750ms;
@@ -87,10 +102,12 @@ h3{
   position: absolute;
   width: 100%;
   height: 100%;
+  margin: 1.5em auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
   grid-gap: 3px;
+  background-color: black !important;
 }
 
 .gameboard-square{
@@ -106,10 +123,11 @@ h3{
 }
 
 .result-div {
-  width: 70%;
+  width: 90%;
   display: flex;
   justify-content: center;
   font-size: 1.25rem;
+  margin: 1.5em auto;
 }
 
 .bottom-container{
@@ -120,10 +138,20 @@ h3{
   margin: 1em;
   padding: 0.5em;
   width: 33%;
+  border: 2px solid #2A2A72;
+  border-radius: 10px;
+}
+
+.move-div p:first-child{
+  border-bottom: 1px solid black;
+  width: 60%;
+  text-align: center;
+  padding-bottom: 0.25em;
 }
 
 .winner-msg{
   width: 60%;
+  border: none;
 }
 
 .invisible-result{
@@ -133,23 +161,38 @@ h3{
 .visible-game-result{
   opacity: 1;
   font-size: 1.75rem;
-  transition: opacity 1s, font-size 0.5s;
+  transform: rotateX(360deg);
+  transition: opacity 1s, font-size 0.5s, transform 1s;
 
 }
 
 /*Styling*/
 
 .page-wrapper {
-  background-color: green;
+  position: relative;
+}
+
+.page-wrapper:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  background: url("../images/gladiato.png") no-repeat center center fixed;
+  background-size: cover;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.65;
 }
 
 .container {
-  background-color: red;
+  background-color: #8B9EB7;
+  border: 2px solid #2A2A72;
 }
 
 .gameboard-square {
   font-size: 4rem;
-  background-color: green;
+  background-color: #8B9EB7EE;
   cursor: pointer;
 }
 
@@ -160,6 +203,7 @@ h3{
 .hidden-right {
   transform: translate(150%);
   transition: 0.5s ease-out;
+  visibility: hidden;
 }
 
 
@@ -172,13 +216,19 @@ h3{
   padding: 0.3em;
   border-radius: 10px;
   color: white;
-  background: blue;
+  background: #253237;
   border: none;
   cursor: pointer;
+  font-family: 'Turret Road', cursive;
 }
 
+.btn:hover {
+  transform: scale(1.05);
+  transition: transform 50ms linear;
+}
 .start-btn{
   margin-top:1.5em;
+  background-color: #588157;
 }
 
 /**GAME OPTIONS **/
@@ -186,7 +236,7 @@ h3{
 .options-container h2,
 .options-container h3 {
   width: 90%;
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid black;
   margin-bottom: 0.25em;
   padding-bottom: 0.15em;
 }
@@ -201,6 +251,7 @@ h3{
   flex-direction: column;
   align-items: center;
   border-radius: 10px;
+  border: 2px solid #2A2A72;
   padding: 0.75em 0;
   text-align: center;
 }
@@ -218,10 +269,6 @@ input{
   border-radius: 10px;
   height: 20px;
   padding-left: 0.3em;
-}
-
-input:focus{
-  outline: none;
 }
 
 .player-label{
@@ -243,7 +290,9 @@ input:focus{
   cursor: pointer;
 }
 
-
+.mark-img:hover {
+  border-color: white;
+}
 img {
   width: 100%;
   margin-bottom: 0.5em;
@@ -255,7 +304,7 @@ img {
 .game-opponent-options {
   width: 30%;
   margin: 10px auto;
-  background-color: red;
+  background-color: #8B9EB7;
 
   transition: transform 0.5s ease-out;
   transition-delay: 500ms;
@@ -278,7 +327,7 @@ img {
 /*Second Div visible and invisible transitions + wrapper to make it appear*/
 
 .game-div-options{
-  background-color: red;
+  background-color: #8B9EB7;
 
   transform: translate(0%, 400%);
   transition: transform 0.5s ease-in;
