@@ -188,6 +188,7 @@ const displayController = (() => {
   const matchupHeader = document.querySelector(".matchup-js");
   const playerMarkDivs = document.querySelectorAll(".mark-div-js");
   const boardSquares = Array.from(document.querySelectorAll(".gameboard-square"));
+  const player2Name = document.querySelector(".player2-js")
 
   //Bind Events
 
@@ -214,8 +215,14 @@ const displayController = (() => {
   }
 
   function showBottomOptions(){
-    gameOptionsDiv.classList.toggle("visible-bottom");
+    gameOptionsDiv.classList.add("visible-bottom");
     bottomOptionsWrapper.style.width = "100%";
+    if (event.target.textContent == "Computer"){
+      player2Name.style.display = "none";
+    }
+    else {
+      player2Name.style.display = "block"
+    }
   }
 
   function showLeftOptions(){
