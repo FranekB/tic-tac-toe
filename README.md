@@ -8,7 +8,6 @@
 * [Features](#features)
 * [Status](#status)
 * [Inspiration](#inspiration)
-* [Contact](#contact)
 
 ## General info
 Project was made to learn how to organize JavaScripts code better by using modules, IIFE's and factory functions. I also learned futher how to make simple animations using CSS, and structuring my content better.
