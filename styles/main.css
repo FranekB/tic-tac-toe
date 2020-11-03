@@ -360,7 +360,7 @@ img {
 }
 
 .hidden{
-  min-height: 61vh;
+  min-height: 55vh;
   position: absolute;
   overflow: hidden;
   left: 50%;
@@ -385,7 +385,6 @@ img {
   .players-div {
       margin: 0.25em auto;
   }
-
 }
 
 @media screen and (max-width: 820px){
@@ -396,5 +395,10 @@ img {
   .gameboard{
     margin: 0 auto;
   }
+}
 
+@media screen and (max-width: 700px){
+  .matchup-img{
+    display: none;
+  }
 }
