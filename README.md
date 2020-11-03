@@ -33,4 +33,4 @@ To-do list:
 Project is almost finished because I feel like I learned and practiced many usefull things including organizing code and making animations. I will probably come back later to add computer AI to the project
 
 ## Inspiration
-Project is part of [The Oding Project](https://www.theodinproject.com/courses/javascript/lessons/tic-tac-toe-javascript)
+Project is part of [The Odin Project](https://www.theodinproject.com/courses/javascript/lessons/tic-tac-toe-javascript)
