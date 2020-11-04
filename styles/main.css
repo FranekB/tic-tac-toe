@@ -10,6 +10,9 @@ html {
 
 :root {
   --white: #FAF0CA;
+  position: fixed;
+  width: 100%;
+  height: 100%;
 }
 
 body {
@@ -186,7 +189,7 @@ h3{
   content: "";
   position: absolute;
   z-index: -1;
-  background: url("../images/gladiato.png") no-repeat center center fixed;
+  background: url("../images/gladiato.png") repeat center center fixed;
   background-size: cover;
   top: 0;
   left: 0;
