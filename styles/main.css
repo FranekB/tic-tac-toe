@@ -125,6 +125,7 @@ h3{
 }
 
 .result-div {
+  position: relative;
   width: 90%;
   display: flex;
   justify-content: center;
@@ -135,7 +136,7 @@ h3{
 .bottom-container{
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
   margin: 1em;
   padding: 0.5em;
@@ -164,7 +165,7 @@ h3{
 
 .invisible-result{
   opacity:0;
-  font-size: 0.25rem
+  font-size: 1.5rem
 }
 
 .visible-game-result{
@@ -394,6 +395,14 @@ img {
 
   .gameboard{
     margin: 0 auto;
+  }
+
+  .invisible-result {
+    position: absolute;
+    bottom: -70%;
+    border: 2px solid #2A2A72;
+    background-color: #8B9EB7;
+    width: 80%;
   }
 }
 

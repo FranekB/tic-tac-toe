@@ -182,14 +182,13 @@ const displayController = (() => {
   const gameOptionsDiv = document.querySelector(".game-options-js");
   const chooseOpponentButtons = document.querySelectorAll(".choose-opponent-js");
   const changeOptionsButton = document.querySelector("#change-options-js");
-  const gameResultDiv = document.querySelector("#game-result-js");
+  const gameResultDiv = document.querySelector(".game-result-js");
   const currentPlayerDiv = document.querySelector("#current-move-js");
   const matchupDivs = document.querySelectorAll(".matchup-mark-js")
   const matchupHeader = document.querySelector(".matchup-js");
   const playerMarkDivs = document.querySelectorAll(".mark-div-js");
   const boardSquares = Array.from(document.querySelectorAll(".gameboard-square"));
   const player2Name = document.querySelector(".player2-js")
-
   //Bind Events
 
   for(const button of chooseOpponentButtons){
