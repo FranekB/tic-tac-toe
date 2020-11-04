@@ -188,7 +188,7 @@ h3{
   position: absolute;
   z-index: -1;
   background: url("../images/gladiato.png") repeat center center fixed;
-  background-size: cover;
+  background-size: contain;
   top: 0;
   left: 0;
   right: 0;
@@ -362,7 +362,7 @@ img {
 }
 
 .hidden{
-  min-height: 55vh;
+  min-height: 40vh;
   position: absolute;
   overflow: hidden;
   left: 50%;
