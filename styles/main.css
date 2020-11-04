@@ -411,4 +411,8 @@ img {
   .matchup-img{
     display: none;
   }
+
+  .page-wrapper {
+    min-height: 110vh;
+  }
 }
