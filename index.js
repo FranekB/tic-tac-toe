@@ -112,8 +112,6 @@ const game = (() => {
   let player1;
   let player2;
   let currentPlayer;
-  let gameState;
-  let gameType;
 
   //DOM Cache
   const resetButton = document.querySelector(".reset-btn-js");
@@ -131,10 +129,13 @@ const game = (() => {
     const marksImg = document.querySelectorAll(".mark-img-js");
     const player1Name = playerNameInputs[0].value || "Player 1";
     const player2Name = playerNameInputs[1].value || "Player 2";
-    const player1Img = marksImg[0]
-    const player2Img = marksImg[1]
-    player1 = playerFactory(player1Name, marksImg[0].getAttribute("alt"), player1Img, false)
-    player2 = playerFactory(player2Name, marksImg[1].getAttribute("alt"), player2Img, false)
+    const player1Img = marksImg[0];
+    const player2Img = marksImg[1];
+    const gameType = displayController.getGameType();
+    let player2AI = false;
+    if (gameType == "computer") player2AI = true;
+    player1 = playerFactory(player1Name, marksImg[0].getAttribute("alt"), player1Img, false);
+    player2 = playerFactory("Computer", marksImg[1].getAttribute("alt"), player2Img, player2AI);
   }
 
   function startGame(){
@@ -162,6 +163,7 @@ const game = (() => {
   function switchCurrentPlayer(player){
     if (gameState != "Playing") return;
     currentPlayer == player1 ? currentPlayer = player2 : currentPlayer = player1
+    if (currentPlayer.getIsComputer()) computerMove()
   }
 
   function computerMove(){
@@ -184,9 +186,7 @@ const game = (() => {
       displayController.renderMove(squarePosition, currentPlayer.getImg());
       isGameOver();
       switchCurrentPlayer();
-      computerMove();
     }
-    gameBoard.getRandomEmptySquare();
     displayController.addCurrentMoveText(currentPlayer);
   }
 
@@ -204,7 +204,7 @@ const game = (() => {
 
 
 const displayController = (() => {
-
+  let gameType;
   //Store DOM
   const leftOptionsWrapper = document.querySelector(".wrapper-hidden");
   const bottomOptionsWrapper = document.querySelector(".hidden");
@@ -223,8 +223,12 @@ const displayController = (() => {
   //Bind Events
 
   for(const button of chooseOpponentButtons){
-    button.addEventListener("click", showBottomOptions);
+    button.addEventListener("click", () => {
+      showBottomOptions();
+      changeGameType();
+    });
   }
+
   changeOptionsButton.addEventListener("click", showLeftOptions)
 
   for (mark of playerMarkDivs){
@@ -255,6 +259,14 @@ const displayController = (() => {
     }
   }
 
+  function changeGameType(){
+    if (event.target.classList.contains("computer-btn-js")) gameType = "computer";
+    else{
+      gameType = "player";
+    }
+    console.log(gameType);
+  }
+
   function showLeftOptions(){
     gameDiv.classList.toggle("hidden-right");
     setTimeout(function(){opponentChoiceDiv.classList.toggle("visible-left")}, 400);
@@ -269,6 +281,7 @@ const displayController = (() => {
     playerMarkDivs[1].lastElementChild.textContent = "Player 2";
   }
 
+  const getGameType = () => gameType;
   const showGameResult = (gameState, currentPlayer) => {
     if (gameState == "Tie"){
       gameResultDiv.textContent = "It's a Tie. Try Again!"
@@ -313,7 +326,8 @@ const displayController = (() => {
     addCurrentMoveText,
     addNamesToInterface,
     renderMove,
-    clearGameBoardDiv
+    clearGameBoardDiv,
+    getGameType
   }
 
   return publicAPI;

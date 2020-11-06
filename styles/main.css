@@ -358,6 +358,7 @@ img {
   margin: 0.25em auto;
   transform: translate(0%);
   transition: transform 0.5s ease-out;
+  min-height: 430px;
 }
 
 .hidden{
