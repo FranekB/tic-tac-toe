@@ -1,12 +1,13 @@
-const playerFactory = (name, mark, markImg) => {
+const playerFactory = (name, mark, markImg, isComputer) => {
 
   const getName = () => name;
   const getMark = () => mark;
   const getImg = () => markImg;
+  const getIsComputer = () => isComputer;
   const makeMove = (position) =>{
     gameBoard.setSquare(position, mark)
   }
-  return { getName, getMark, makeMove, getImg };
+  return { getName, getMark, makeMove, getImg, getIsComputer };
 }
 
 const gameBoard = (() => {
@@ -25,6 +26,24 @@ const gameBoard = (() => {
 
   const getState = () => gameState;
 
+  function getEmptySquaresPositions(){
+    let emptySquares = [];
+    for (let i = 0; i < 3; i++){
+      for (let j = 0; j < 3; j++){
+        if (isEmptySquare([i,j])){
+          emptySquares.push([i,j]);
+        }
+      }
+    }
+    return emptySquares;
+  }
+
+  function getRandomEmptySquare(){
+    let emptyPositions = getEmptySquaresPositions();
+    let randomPosition = Math.floor((Math.random() * emptyPositions.length));
+    return emptyPositions[randomPosition];
+  }
+
   function getRows(){
     rows = []
     for(row of _gameboard){
@@ -34,7 +53,7 @@ const gameBoard = (() => {
   }
 
   function getColumns(){
-    let columns = []
+    let columns = [];
     for (let i = 0; i < 3; i++){
       let column = []
       for (let j = 0; j < 3; j++){
@@ -60,7 +79,6 @@ const gameBoard = (() => {
     return [firstDiagonal, secondDiagonal];
   }
 
-
   const isThreeInARow = () => {
     const winningPositions = ["X,X,X", "O,O,O"]
     const position = [getDiagonals(), getColumns(), getRows()].flat()
@@ -81,7 +99,9 @@ const gameBoard = (() => {
       clearGameBoard,
       setSquare,
       isThreeInARow,
-      isAllMarksPlaced
+      isAllMarksPlaced,
+      getEmptySquaresPositions,
+      getRandomEmptySquare
     };
 
   return publicAPI
@@ -93,6 +113,7 @@ const game = (() => {
   let player2;
   let currentPlayer;
   let gameState;
+  let gameType;
 
   //DOM Cache
   const resetButton = document.querySelector(".reset-btn-js");
@@ -112,8 +133,8 @@ const game = (() => {
     const player2Name = playerNameInputs[1].value || "Player 2";
     const player1Img = marksImg[0]
     const player2Img = marksImg[1]
-    player1 = playerFactory(player1Name, marksImg[0].getAttribute("alt"), player1Img)
-    player2 = playerFactory(player2Name, marksImg[1].getAttribute("alt"), player2Img)
+    player1 = playerFactory(player1Name, marksImg[0].getAttribute("alt"), player1Img, false)
+    player2 = playerFactory(player2Name, marksImg[1].getAttribute("alt"), player2Img, false)
   }
 
   function startGame(){
@@ -143,6 +164,14 @@ const game = (() => {
     currentPlayer == player1 ? currentPlayer = player2 : currentPlayer = player1
   }
 
+  function computerMove(){
+    if (gameState != "Playing") return
+      let randomMove = gameBoard.getRandomEmptySquare();
+      currentPlayer.makeMove(randomMove);
+      displayController.renderMove(randomMove, currentPlayer.getImg());
+      isGameOver();
+      switchCurrentPlayer();
+  }
 
   //Adds mark of current player to the gameboard
   function makeMove(event){
@@ -151,11 +180,13 @@ const game = (() => {
 
     const squarePosition = Array.from(event.target.getAttribute("data-position"));
     if(gameBoard.isEmptySquare(squarePosition)){
-      currentPlayer.makeMove(squarePosition)
-      displayController.renderMove(event.target, currentPlayer.getImg())
-      isGameOver()
-      switchCurrentPlayer()
+      currentPlayer.makeMove(squarePosition);
+      displayController.renderMove(squarePosition, currentPlayer.getImg());
+      isGameOver();
+      switchCurrentPlayer();
+      computerMove();
     }
+    gameBoard.getRandomEmptySquare();
     displayController.addCurrentMoveText(currentPlayer);
   }
 
@@ -250,7 +281,7 @@ const displayController = (() => {
 
   const addCurrentMoveText = (currentPlayer) => {
       currentPlayerDiv.textContent = `${currentPlayer.getName()}`
-    }
+  }
 
   const addNamesToInterface = (player1, player2) => {
       const matchupName = matchupHeader.querySelector("h2");
@@ -261,12 +292,13 @@ const displayController = (() => {
       matchupDivs[0].replaceChild(firstImg, matchupDivs[0].firstElementChild);
       matchupDivs[1].replaceChild(secondImg, matchupDivs[1].firstElementChild);
       matchupName.textContent = `${player1.getName()} vs ${player2.getName()}`
-    }
+  }
 
   const renderMove = (squarePosition, markImg) => {
-    const markImage = markImg.cloneNode()
+    const markImage = markImg.cloneNode();
+    const movePosition = document.querySelector(`[data-position = "${squarePosition[0]}${squarePosition[1]}"]`)
     markImage.classList.add("gameboard-img");
-    squarePosition.appendChild(markImage);
+    movePosition.appendChild(markImage);
   }
 
   const clearGameBoardDiv = () => {
