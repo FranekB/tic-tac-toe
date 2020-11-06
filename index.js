@@ -128,14 +128,17 @@ const game = (() => {
   function createPlayers(){
     const marksImg = document.querySelectorAll(".mark-img-js");
     const player1Name = playerNameInputs[0].value || "Player 1";
-    const player2Name = playerNameInputs[1].value || "Player 2";
     const player1Img = marksImg[0];
     const player2Img = marksImg[1];
     const gameType = displayController.getGameType();
     let player2AI = false;
-    if (gameType == "computer") player2AI = true;
+    let player2Name = playerNameInputs[1].value || "Player 2";
+    if (gameType == "computer"){
+      player2AI = true;
+      player2Name = "Computer";
+    }
     player1 = playerFactory(player1Name, marksImg[0].getAttribute("alt"), player1Img, false);
-    player2 = playerFactory("Computer", marksImg[1].getAttribute("alt"), player2Img, player2AI);
+    player2 = playerFactory(player2Name, marksImg[1].getAttribute("alt"), player2Img, player2AI);
   }
 
   function startGame(){
@@ -163,14 +166,14 @@ const game = (() => {
   function switchCurrentPlayer(player){
     if (gameState != "Playing") return;
     currentPlayer == player1 ? currentPlayer = player2 : currentPlayer = player1
-    if (currentPlayer.getIsComputer()) computerMove()
+    if (currentPlayer.getIsComputer()) computerMove();
   }
 
   function computerMove(){
     if (gameState != "Playing") return
       let randomMove = gameBoard.getRandomEmptySquare();
       currentPlayer.makeMove(randomMove);
-      displayController.renderMove(randomMove, currentPlayer.getImg());
+      displayController.renderMove(randomMove, currentPlayer.getImg())
       isGameOver();
       switchCurrentPlayer();
   }
@@ -252,10 +255,12 @@ const displayController = (() => {
     gameOptionsDiv.classList.add("visible-bottom");
     bottomOptionsWrapper.style.width = "100%";
     if (event.target.textContent == "Computer"){
-      player2Name.style.display = "none";
+      player2Name.style.visibility = "hidden";
+      playerMarkDivs[1].lastElementChild.textContent = "Computer";
     }
     else {
-      player2Name.style.display = "block"
+      player2Name.style.visibility = "visible";
+      playerMarkDivs[1].lastElementChild.textContent = "Player2";
     }
   }
 
@@ -264,7 +269,6 @@ const displayController = (() => {
     else{
       gameType = "player";
     }
-    console.log(gameType);
   }
 
   function showLeftOptions(){
@@ -278,7 +282,10 @@ const displayController = (() => {
     playerMarkDivs[0].innerHTML = playerMarkDivs[1].innerHTML;
     playerMarkDivs[1].innerHTML = tempDiv;
     playerMarkDivs[0].lastElementChild.textContent = "Player 1";
-    playerMarkDivs[1].lastElementChild.textContent = "Player 2";
+    if (gameType == "computer") playerMarkDivs[1].lastElementChild.textContent = "Computer";
+    else{
+      playerMarkDivs[1].lastElementChild.textContent = "Player 2";
+    }
   }
 
   const getGameType = () => gameType;
