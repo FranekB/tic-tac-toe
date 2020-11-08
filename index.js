@@ -1,3 +1,108 @@
+const computerAI = (() => {
+  let computerMark = "X";
+
+  function getEmptySquaresPositions(gameboard){
+    let emptySquares = [];
+    for (let i = 0; i < 3; i++){
+      for (let j = 0; j < 3; j++){
+        if (gameboard[i][j] == ""){
+          emptySquares.push([i,j]);
+        }
+      }
+    }
+    return emptySquares;
+  }
+
+  function setComputerMark(mark){
+    computerMark = mark
+  }
+  function winning(gameboard, player){
+   if (
+   (gameboard[0][0] == player && gameboard[0][1] == player && gameboard[0][2] == player) ||
+   (gameboard[1][0] == player && gameboard[1][1] == player && gameboard[1][2] == player) ||
+   (gameboard[2][0] == player && gameboard[2][1] == player && gameboard[2][2] == player) ||
+   (gameboard[0][0] == player && gameboard[1][0] == player && gameboard[2][0] == player) ||
+   (gameboard[0][1] == player && gameboard[1][1] == player && gameboard[2][1] == player) ||
+   (gameboard[0][2] == player && gameboard[1][2] == player && gameboard[2][2] == player) ||
+   (gameboard[0][0] == player && gameboard[1][1] == player && gameboard[2][2] == player) ||
+   (gameboard[2][0] == player && gameboard[1][1] == player && gameboard[0][2] == player)
+   ) {
+   return true;
+   } else {
+   return false;
+   }
+  }
+  function getBestMove(gameboard, player, isMaximazing, depth){
+    let emptySquares = getEmptySquaresPositions(gameboard);
+    let playerMark;
+    computerMark == "X" ? playerMark = "O" : playerMark = "X";
+    if(winning(gameboard, computerMark)){
+      return {score: 100 - depth}
+    }
+    else if(winning(gameboard, playerMark)){
+      return {score: -100 + depth}
+    }
+    else if(emptySquares.length == 0){
+      return {score: 0}
+    }
+
+    let moves = []
+    let result;
+    for(let square of emptySquares){
+      let move = {}
+      gameboard[square[0]][square[1]] = player;
+      move.index = square
+      if(player == playerMark){
+        result = getBestMove(gameboard, computerMark, true, depth + 1)
+        move.score = result.score
+      }
+      else if(player == computerMark){
+        result = getBestMove(gameboard, playerMark, false, depth + 1)
+        move.score = result.score
+      }
+      moves.push(move)
+      gameboard[square[0]][square[1]] = "";
+    }
+
+    let bestMove = {}
+    if(isMaximazing){
+      bestMove.score = -1000;
+      for(let move of moves){
+        if (move.score > bestMove.score){
+          bestMove.score = move.score
+          bestMove.move = move.index
+        }
+      }
+    }
+    else{
+      bestMove.score = 1000;
+      for(let move of moves){
+        if (move.score < bestMove.score){
+          bestMove.score = move.score;
+          bestMove.move = move.index
+        }
+      }
+    }
+    if (depth == 0){
+      return bestMove.move
+    }
+    return bestMove
+  }
+
+  const publicAPI = {
+    getBestMove,
+    computerMark,
+    setComputerMark
+  }
+
+  return publicAPI
+})()
+
+
+
+
+
+
 const playerFactory = (name, mark, markImg, isComputer) => {
 
   const getName = () => name;
@@ -90,7 +195,7 @@ const gameBoard = (() => {
   }
 
   const getGameBoard = () => {
-    return _gameboard
+    return JSON.parse(JSON.stringify(_gameboard))
   }
 
   const publicAPI = {
@@ -139,6 +244,7 @@ const game = (() => {
     }
     player1 = playerFactory(player1Name, marksImg[0].getAttribute("alt"), player1Img, false);
     player2 = playerFactory(player2Name, marksImg[1].getAttribute("alt"), player2Img, player2AI);
+    computerAI.setComputerMark(player2.getMark())
   }
 
   function startGame(){
@@ -171,9 +277,9 @@ const game = (() => {
 
   function computerMove(){
     if (gameState != "Playing") return
-      let randomMove = gameBoard.getRandomEmptySquare();
-      currentPlayer.makeMove(randomMove);
-      displayController.renderMove(randomMove, currentPlayer.getImg())
+      let bestMove = computerAI.getBestMove(gameBoard.getGameBoard(), player2.getMark(), true, 0);
+      currentPlayer.makeMove(bestMove);
+      displayController.renderMove(bestMove, currentPlayer.getImg())
       isGameOver();
       switchCurrentPlayer();
   }
@@ -260,7 +366,7 @@ const displayController = (() => {
     }
     else {
       player2Name.style.visibility = "visible";
-      playerMarkDivs[1].lastElementChild.textContent = "Player2";
+      playerMarkDivs[1].lastElementChild.textContent = "Player 2";
     }
   }
 
