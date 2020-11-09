@@ -278,17 +278,20 @@ const game = (() => {
   function computerMove(){
     if (gameState != "Playing") return
       let bestMove = computerAI.getBestMove(gameBoard.getGameBoard(), player2.getMark(), true, 0);
-      currentPlayer.makeMove(bestMove);
-      displayController.renderMove(bestMove, currentPlayer.getImg())
-      isGameOver();
-      switchCurrentPlayer();
+      setTimeout( () => {
+        currentPlayer.makeMove(bestMove)
+        displayController.renderMove(bestMove, currentPlayer.getImg())
+        isGameOver();
+        switchCurrentPlayer()
+        displayController.addCurrentMoveText(currentPlayer);
+      }, 500)
   }
 
   //Adds mark of current player to the gameboard
   function makeMove(event){
     if (!event.target.classList.contains("gameboard-square")) return
     if (gameState != "Playing") return
-
+    if (currentPlayer.getIsComputer() == true) return
     const squarePosition = Array.from(event.target.getAttribute("data-position"));
     if(gameBoard.isEmptySquare(squarePosition)){
       currentPlayer.makeMove(squarePosition);
@@ -362,7 +365,7 @@ const displayController = (() => {
     bottomOptionsWrapper.style.width = "100%";
     if (event.target.textContent == "Computer"){
       player2Name.style.visibility = "hidden";
-      playerMarkDivs[1].lastElementChild.textContent = "Computer";
+      playerMarkDivs[1].lastElementChild.textContent = "AI";
     }
     else {
       player2Name.style.visibility = "visible";
